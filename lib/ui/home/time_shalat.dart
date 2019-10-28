@@ -18,7 +18,8 @@ class TimeShalatWidget extends StatelessWidget {
               topRight: const Radius.circular(Dimens.space16))),
       padding: EdgeInsets.fromLTRB(
           Dimens.space4, Dimens.space16, Dimens.space4, Dimens.space16),
-      margin: EdgeInsets.fromLTRB(Dimens.space4,Dimens.space8,Dimens.space4,Dimens.space8),
+      margin: EdgeInsets.fromLTRB(
+          Dimens.space4, Dimens.space8, Dimens.space4, Dimens.space8),
       child: Column(children: <Widget>[
         Text("13:00",
             style: TextStyle(
