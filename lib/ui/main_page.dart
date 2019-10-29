@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/ui/home/home.dart';
-import 'package:pojok_islam/ui/settings/settings.dart';
+import 'package:pojok_islam/ui/home/home_page.dart';
+import 'package:pojok_islam/ui/settings/settings_page.dart';
 import 'dart:developer' as console;
+import 'package:flutter/services.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -14,9 +15,10 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _fragment = [Home(), Settings()];
   @override
   Widget build(BuildContext context) {
-    // console.log("piyu" + _currentTabIndex.toString());
-    // console.log("piyu" + _fragment.toString());
-    // console.log("piyu"+_fragment[_currentTabIndex].toString());
+    //set transparent statusbar on android
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
     return Scaffold(
       body: _fragment[_currentTabIndex],
       bottomNavigationBar: BottomNavigationBar(
