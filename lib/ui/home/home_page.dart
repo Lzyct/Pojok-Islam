@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/ui/home/time_shalat.dart';
+import 'package:pojok_islam/ui/home/time_shalat_item.dart';
 import 'package:pojok_islam/utils/screen.dart';
 
 class Home extends StatelessWidget {
@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
         child: Stack(children: <Widget>[
       Container(
         width: ScreenInPercent.widthInPercent(context, 100),
-        height: ScreenInPercent.heightInPercent(context, 35),
+        height: ScreenInPercent.heightInPercent(context, 38),
         child: Image(
           image: AssetImage('assets/images/bg_header.png'),
           fit: BoxFit.cover,
@@ -75,6 +75,7 @@ class Home extends StatelessWidget {
                                     AssetImage('assets/images/ic_location.png'),
                                 width: Dimens.smallIcon,
                                 height: Dimens.smallIcon,
+                                color: Pallette.colorPrimary,
                               ),
                               Text(
                                 "Makassar,Indonesia",
@@ -137,19 +138,19 @@ class Home extends StatelessWidget {
                 Flexible(
                   child: Container(
                     width: double.infinity,
-                    height: ScreenInPercent.heightInPercent(context, 20),
                     margin: EdgeInsets.fromLTRB(Dimens.space16, Dimens.space24,
                         Dimens.space16, Dimens.space16),
                     child: Card(
                         elevation: 4,
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Container(
                                 width:
                                     ScreenInPercent.widthInPercent(context, 40),
                                 padding: EdgeInsets.all(Dimens.space8),
                                 decoration: new BoxDecoration(
-                                    color: Pallette.colorPrimary,
+                                    color: Pallette.colorPrimaryDark,
                                     borderRadius: new BorderRadius.only(
                                         bottomLeft: const Radius.circular(
                                             Dimens.space16),
@@ -174,19 +175,26 @@ class Home extends StatelessWidget {
                                     ),
                                   ],
                                 )),
+                            Flexible(
+                                child: Container(
+                              width: double.infinity,
+                              height:
+                                  ScreenInPercent.heightInPercent(context, 8.5),
+                              margin: EdgeInsets.only(
+                                  left: Dimens.space8,
+                                  right: Dimens.space8,
+                                  top: Dimens.space8),
+                              child: TimeShalatAdapter(),
+                            )),
                             Container(
-                              margin: EdgeInsets.all(Dimens.space8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  TimeShalatWidget(),
-                                  TimeShalatWidget(),
-                                  TimeShalatWidget(),
-                                  TimeShalatWidget(),
-                                  TimeShalatWidget(),
-                                  TimeShalatWidget(),
-                                ],
+                              width: double.infinity,
+                              padding: EdgeInsets.all(Dimens.space8),
+                              child: Text(
+                                "Lihat Semua",
+                                style: TextStyle(
+                                    color: Pallette.colorPrimary,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.end,
                               ),
                             )
                           ],
@@ -200,4 +208,10 @@ class Home extends StatelessWidget {
       )
     ]));
   }
+}
+
+class TimeShalat {
+  final String shalatTime;
+  final String shalatName;
+  TimeShalat(this.shalatTime, this.shalatName);
 }
