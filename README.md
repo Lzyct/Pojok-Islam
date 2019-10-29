@@ -1,16 +1,20 @@
-# pojok_islam
+# POJOK ISLAM
+This project using [Flutter Framework](https://flutter.dev/).
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Using Library
+ + [ ]  [BLoC](https://pub.dev/packages/bloc)
+ + [ ]  [http](https://pub.dev/packages/http)
+ + [x]  [intl](https://pub.dev/packages/intl)
+ + [ ]  [shimmer](https://pub.dev/packages/shimmer)
+ + Add Later
+## Todo
++ [ ]  Get User Location
++ [ ]  Get Time Shalat and Date in Hijr Calendar
++ [ ] Show Notification/Alarm When is Time For Shalat
++ [ ] Show Nearby Mosque
++ [ ] Show Daily Hadits
++ [ ] Show List Hadits Book
++ [ ] Send Hadits Random to Notification
++ [ ] Show Radio Dakwah
++ [ ] Create Player Radio Dakwah
++ [ ] Support Dark Mode
