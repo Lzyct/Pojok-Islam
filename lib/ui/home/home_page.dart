@@ -3,10 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/ui/home/time_shalat_item.dart';
+import 'package:pojok_islam/ui/home/home_hadits_collections_item.dart';
+import 'package:pojok_islam/ui/home/home_radio_dakwah_item.dart';
 import 'package:pojok_islam/utils/screen.dart';
 
 import 'dart:developer' as console;
+
+import 'home_nearby_mosque_item.dart';
+import 'home_time_shalat_item.dart';
 
 class Home extends StatelessWidget {
   const Home({Key key}) : super(key: key);
@@ -26,54 +30,16 @@ class Home extends StatelessWidget {
           delegate: SliverChildListDelegate([
             Container(
               margin: EdgeInsets.only(
-                  top: ScreenInPercent.heightInPercent(context, 12)),
+                  top: ScreenInPercent.heightInPercent(context, 14)),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(Dimens.space16,
-                            Dimens.space8, Dimens.space16, Dimens.space8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              Strings.nearbyMosque,
-                              style: TextStyle(
-                                  color: Pallette.colorPrimary,
-                                  fontSize: Dimens.h3,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Spacer(),
-                            Text(
-                              Strings.seeAll,
-                              style: TextStyle(color: Pallette.colorPrimary),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: ScreenInPercent.heightInPercent(context, 14),
-                        margin: EdgeInsets.only(
-                            left: Dimens.space8, right: Dimens.space8),
-                        child: ListView.builder(
-                            itemCount: 4,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                  width: ScreenInPercent.widthInPercent(
-                                      context, 50),
-                                  child: Card(
-                                      child: Container(
-                                    padding: EdgeInsets.all(Dimens.space16),
-                                    child: Text(
-                                        "test testtesttesttesttesttesttesttesttesttesttesttesttest"),
-                                  )));
-                            }),
-                      ),
+                      NearbyMosque(),
+                      HaditsCollections(),
+                      RadioDakwah(),
                     ],
                   )
                 ],
@@ -102,7 +68,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
       children: [
         Image(
           image: AssetImage('assets/images/bg_header.png'),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
         SafeArea(
           child: Column(
@@ -176,52 +142,51 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                   visible:
                       (1 - shrinkOffset / expandedHeight) <= 0.8 ? false : true,
                   child: Opacity(
-                      opacity: (1 - ((shrinkOffset * 8) / expandedHeight)) <= 0
+                      opacity: (1 - ((shrinkOffset * 13) / expandedHeight)) <= 0
                           ? 0
-                          : (1 - ((shrinkOffset * 8) / expandedHeight)),
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(
-                            Dimens.space16, 40, Dimens.space16, 0),
-                        child: Text(
-                          Strings.haditsText,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Dimens.space16,
-                              fontStyle: FontStyle.italic),
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                        ),
+                          : (1 - ((shrinkOffset * 13) / expandedHeight)),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.fromLTRB(
+                                Dimens.space16,
+                                ScreenInPercent.heightInPercent(context, 4),
+                                Dimens.space16,
+                                0),
+                            child: Text(
+                              Strings.haditsText,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Dimens.space16,
+                                  fontStyle: FontStyle.italic),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.only(top: Dimens.space2),
+                            padding: EdgeInsets.fromLTRB(
+                                0, Dimens.space16, Dimens.smallIcon, 0),
+                            child: Text(
+                              Strings.haditsRiwayah,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Dimens.h5,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                        ],
                       ))),
-              Visibility(
-                  visible:
-                      (1 - shrinkOffset / expandedHeight) <= 0.8 ? false : true,
-                  child: Opacity(
-                    opacity: (1 - ((shrinkOffset * 8) / expandedHeight)) <= 0
-                        ? 0
-                        : (1 - ((shrinkOffset * 8) / expandedHeight)),
-                    child: Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.only(top: Dimens.space8),
-                      padding: EdgeInsets.fromLTRB(
-                          0, Dimens.space16, Dimens.smallIcon, 0),
-                      child: Text(
-                        Strings.haditsRiwayah,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Dimens.h5,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                  ))
             ],
           ),
         ),
         Positioned(
-          top: cardTopPosition > ScreenInPercent.widthInPercent(context, 27)
+          top: cardTopPosition > ScreenInPercent.widthInPercent(context, 26)
               ? cardTopPosition
-              : ScreenInPercent.widthInPercent(context, 27),
+              : ScreenInPercent.widthInPercent(context, 26),
           width: ScreenInPercent.widthInPercent(context, 100),
           child: Container(
               margin:

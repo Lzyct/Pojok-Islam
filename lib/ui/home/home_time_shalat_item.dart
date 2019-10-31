@@ -14,9 +14,9 @@ class TimeShalatAdapter extends StatelessWidget {
       ..add(TimeShalat("04:30", "Subuh"))
       ..add(TimeShalat("06:05", "Syuruq"))
       ..add(TimeShalat("12:05", "Dzuhur"))
-      ..add(TimeShalat("23:05", "Ashar"))
-      ..add(TimeShalat("23:25", "Maghrib"))
-      ..add(TimeShalat("23:40", "Isya"));
+      ..add(TimeShalat("15:05", "Ashar"))
+      ..add(TimeShalat("18:08", "Maghrib"))
+      ..add(TimeShalat("19:15", "Isya"));
 
     return Center(
       child: ListView.builder(
