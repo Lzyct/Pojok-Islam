@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
-import 'dart:developer' as console;
+import 'package:pojok_islam/utils/extensions.dart';
 
 class TimeShalatAdapter extends StatelessWidget {
   const TimeShalatAdapter({Key key}) : super(key: key);
@@ -39,22 +39,22 @@ class TimeShalatAdapter extends StatelessWidget {
                 shalatTime.hour, shalatTime.minute);
             if (timeNow.isAfter(shalatTime)) {
               listIsPassed.add(i);
-              console.log("passed");
-              console.log("time now : " + timeNow.toString());
-              console.log("time shalat : " +
+              context.log("passed");
+              context.log("time now : " + timeNow.toString());
+              context.log("time shalat : " +
                   listShalat[i].shalatName +
                   shalatTime.toString());
             } else {
-              console.log("next : " + nextTime.toString());
+              context.log("next : " + nextTime.toString());
               if (nextTime == null) {
                 nextTime = i;
               } else if (nextTime != i) {
                 listNotYet.add(i);
               }
 
-              console.log("not yet");
-              console.log("time now : " + timeNow.toString());
-              console.log("time shalat : " +
+              context.log("not yet");
+              context.log("time now : " + timeNow.toString());
+              context.log("time shalat : " +
                   listShalat[i].shalatName +
                   shalatTime.toString());
             }

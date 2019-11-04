@@ -5,9 +5,7 @@ import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
 import 'package:pojok_islam/ui/home/home_hadits_collections_item.dart';
 import 'package:pojok_islam/ui/home/home_radio_dakwah_item.dart';
-import 'package:pojok_islam/utils/screen.dart';
-
-import 'dart:developer' as console;
+import 'package:pojok_islam/utils/extensions.dart';
 
 import 'home_nearby_mosque_item.dart';
 import 'home_time_shalat_item.dart';
@@ -21,16 +19,16 @@ class Home extends StatelessWidget {
       slivers: <Widget>[
         SliverPersistentHeader(
           delegate: HeaderView(
-              expandedHeight: ScreenInPercent.heightInPercent(context, 38),
-              minHeight: ScreenInPercent.widthInPercent(context, 35)),
+              expandedHeight: context.heightInPercent(context, 38),
+              minHeight: context.widthInPercent(context, 35)),
           pinned: true,
           floating: false,
         ),
         SliverList(
           delegate: SliverChildListDelegate([
             Container(
-              margin: EdgeInsets.only(
-                  top: ScreenInPercent.heightInPercent(context, 14)),
+              margin:
+                  EdgeInsets.only(top: context.heightInPercent(context, 14)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
@@ -60,7 +58,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final cardTopPosition = expandedHeight / 1.3 - shrinkOffset;
+    final cardTopPosition = expandedHeight / 1.35 - shrinkOffset;
 
     return Stack(
       fit: StackFit.expand,
@@ -150,7 +148,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                           Container(
                             margin: EdgeInsets.fromLTRB(
                                 Dimens.space16,
-                                ScreenInPercent.heightInPercent(context, 4),
+                                context.heightInPercent(context, 4),
                                 Dimens.space16,
                                 0),
                             child: Text(
@@ -184,11 +182,12 @@ class HeaderView extends SliverPersistentHeaderDelegate {
           ),
         ),
         Positioned(
-          top: cardTopPosition > ScreenInPercent.widthInPercent(context, 26)
+          top: cardTopPosition > context.widthInPercent(context, 26)
               ? cardTopPosition
-              : ScreenInPercent.widthInPercent(context, 26),
-          width: ScreenInPercent.widthInPercent(context, 100),
-          child: Container(
+              : context.widthInPercent(context, 26),
+          width: context.widthInPercent(context, 100),
+          child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
               margin:
                   EdgeInsets.only(left: Dimens.space16, right: Dimens.space16),
               child: Opacity(
@@ -200,7 +199,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Container(
-                            width: ScreenInPercent.widthInPercent(context, 40),
+                            width: context.widthInPercent(context, 40),
                             padding: EdgeInsets.all(Dimens.space8),
                             decoration: new BoxDecoration(
                                 color: Pallette.colorPrimaryDark,
@@ -230,7 +229,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                         Flexible(
                             child: Container(
                           width: double.infinity,
-                          height: ScreenInPercent.heightInPercent(context, 8.5),
+                          height: context.heightInPercent(context, 8.5),
                           margin: EdgeInsets.only(
                               left: Dimens.space8,
                               right: Dimens.space8,

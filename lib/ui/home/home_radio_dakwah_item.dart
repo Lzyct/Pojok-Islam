@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/utils/screen.dart';
+import 'package:pojok_islam/utils/extensions.dart';
 
 class RadioDakwah extends StatelessWidget {
   const RadioDakwah({Key key}) : super(key: key);
@@ -35,7 +35,7 @@ class RadioDakwah extends StatelessWidget {
         ),
         Container(
           width: double.infinity,
-          height: ScreenInPercent.heightInPercent(context, 14),
+          height: context.heightInPercent(context, 14),
           margin: EdgeInsets.only(left: Dimens.space8, right: Dimens.space8),
           child: ListView.builder(
               itemCount: 4,
@@ -43,7 +43,7 @@ class RadioDakwah extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Container(
-                    width: ScreenInPercent.widthInPercent(context, 50),
+                    width: context.widthInPercent(context, 50),
                     child: Card(
                         child: Container(
                       padding: EdgeInsets.all(Dimens.space16),
