@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/ui/home/home_hadits_collections_item.dart';
-import 'package:pojok_islam/ui/home/home_radio_dakwah_item.dart';
+import 'package:pojok_islam/ui/home/bloc/bloc.dart';
+import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
-
-import 'home_nearby_mosque_item.dart';
-import 'home_time_shalat_item.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   const Home({Key key}) : super(key: key);
@@ -33,12 +32,14 @@ class Home extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      NearbyMosque(),
-                      HaditsCollections(),
-                      RadioDakwah(),
-                    ],
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        NearbyMosque(),
+                        HaditsCollections(),
+                        RadioDakwah(),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -55,11 +56,16 @@ class HeaderView extends SliverPersistentHeaderDelegate {
   final double minHeight;
 
   HeaderView({@required this.expandedHeight, this.minHeight});
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final cardTopPosition = expandedHeight / 1.35 - shrinkOffset;
 
+    // ignore: close_sinks
+    HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
+
+    _homeBloc.add(GetLocationEvent());
     return Stack(
       fit: StackFit.expand,
       overflow: Overflow.visible,
@@ -107,29 +113,42 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                     ),
                     child: Row(
                       children: <Widget>[
-                        Container(
-                            padding: EdgeInsets.only(
-                                left: Dimens.space4,
-                                right: Dimens.space4,
-                                top: Dimens.space8,
-                                bottom: Dimens.space8),
-                            child: Row(
-                              children: <Widget>[
-                                Image(
-                                  image: AssetImage(
-                                      'assets/images/ic_location.png'),
-                                  width: Dimens.smallIcon,
-                                  height: Dimens.smallIcon,
-                                  color: Pallette.colorPrimary,
-                                ),
-                                Text(
-                                  "Makassar,Indonesia",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: Dimens.h4,
-                                      color: Pallette.colorPrimary),
-                                ),
-                              ],
+                        GestureDetector(
+                            onTap: () {
+                              _homeBloc.add(GetLocationEvent());
+                              context.toastInfo("Location Updated");
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: Dimens.space4,
+                                  right: Dimens.space4,
+                                  top: Dimens.space8,
+                                  bottom: Dimens.space8),
+                              child: Row(
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage(
+                                        'assets/images/ic_location.png'),
+                                    width: Dimens.smallIcon,
+                                    height: Dimens.smallIcon,
+                                    color: Pallette.colorPrimary,
+                                  ),
+                                  BlocBuilder<HomeBloc, HomeState>(
+                                      builder: (context, homeState) {
+                                    if (homeState is GetLocationState) {
+                                      return Text(
+                                        homeState.locationValue.toString(),
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: Dimens.h4,
+                                            color: Pallette.colorPrimary),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
+                                ],
+                              ),
                             )),
                       ],
                     ),
@@ -268,5 +287,6 @@ class HeaderView extends SliverPersistentHeaderDelegate {
 class TimeShalat {
   final String shalatTime;
   final String shalatName;
+
   TimeShalat(this.shalatTime, this.shalatName);
 }

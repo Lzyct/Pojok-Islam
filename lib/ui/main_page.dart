@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pojok_islam/resources/colors.dart';
+import 'package:pojok_islam/ui/home/bloc/bloc.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
 import 'package:pojok_islam/ui/settings/settings_page.dart';
 import 'dart:developer' as console;
@@ -12,7 +14,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentTabIndex = 0;
-  final List<Widget> _fragment = [Home(), Settings()];
+  final List<Widget> _fragment = [
+    
+    BlocProvider<HomeBloc>(
+        builder:  (context)=> HomeBloc(),
+        child: Home()), Settings()];
   @override
   Widget build(BuildContext context) {
     //set transparent statusbar on android

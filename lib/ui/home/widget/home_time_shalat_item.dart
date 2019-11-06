@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
-import 'package:pojok_islam/utils/extensions.dart';
 
 class TimeShalatAdapter extends StatelessWidget {
   const TimeShalatAdapter({Key key}) : super(key: key);
@@ -30,7 +29,7 @@ class TimeShalatAdapter extends StatelessWidget {
 
           List<int> listIsPassed = [];
           List<int> listNotYet = [];
-          int nextTime = null;
+          int nextTime;
 
           //loop to check state isPassed or not
           for (int i = 0; i < listShalat.length; i++) {
@@ -39,28 +38,28 @@ class TimeShalatAdapter extends StatelessWidget {
                 shalatTime.hour, shalatTime.minute);
             if (timeNow.isAfter(shalatTime)) {
               listIsPassed.add(i);
-              context.log("passed");
-              context.log("time now : " + timeNow.toString());
-              context.log("time shalat : " +
+              print("passed");
+              print("time now : " + timeNow.toString());
+              print("time shalat : " +
                   listShalat[i].shalatName +
                   shalatTime.toString());
             } else {
-              context.log("next : " + nextTime.toString());
+              print("next : " + nextTime.toString());
               if (nextTime == null) {
                 nextTime = i;
               } else if (nextTime != i) {
                 listNotYet.add(i);
               }
 
-              context.log("not yet");
-              context.log("time now : " + timeNow.toString());
-              context.log("time shalat : " +
+              print("not yet");
+              print("time now : " + timeNow.toString());
+              print("time shalat : " +
                   listShalat[i].shalatName +
                   shalatTime.toString());
             }
           }
 
-          Color textColor = null;
+          Color textColor;
           if (listIsPassed.contains(index)) {
             textColor = Pallette.textDisable;
           } else if (listNotYet.contains(index)) {
