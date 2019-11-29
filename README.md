@@ -6,13 +6,13 @@ This project using [Flutter Framework](https://flutter.dev/).
 
 
 ## Using Library
- + [ ]  [BLoC](https://pub.dev/packages/bloc)
+ + [x]  [BLoC](https://pub.dev/packages/bloc)
  + [ ]  [http](https://pub.dev/packages/http)
  + [x]  [intl](https://pub.dev/packages/intl)
  + [ ]  [shimmer](https://pub.dev/packages/shimmer)
  + Add Later
 ## Todo
-+ [ ]  Get User Location
++ [x]  Get User Location
 + [ ]  Get Time Shalat,Sunnah Day and Date in Hijr Calendar
 + [ ]  Show Notification/Alarm When is Time For Shalat
 + [ ]  Show Nearby Mosque

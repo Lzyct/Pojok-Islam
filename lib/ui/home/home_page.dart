@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +8,16 @@ import 'package:pojok_islam/resources/strings.dart';
 import 'package:pojok_islam/ui/home/bloc/bloc.dart';
 import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   const Home({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
+    final _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc.add(GetLocationEvent());
+
     return CustomScrollView(
       slivers: <Widget>[
         SliverPersistentHeader(
@@ -63,9 +67,8 @@ class HeaderView extends SliverPersistentHeaderDelegate {
     final cardTopPosition = expandedHeight / 1.35 - shrinkOffset;
 
     // ignore: close_sinks
-    HomeBloc _homeBloc = BlocProvider.of<HomeBloc>(context);
+    final _homeBloc = BlocProvider.of<HomeBloc>(context);
 
-    _homeBloc.add(GetLocationEvent());
     return Stack(
       fit: StackFit.expand,
       overflow: Overflow.visible,
@@ -117,6 +120,23 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                             onTap: () {
                               _homeBloc.add(GetLocationEvent());
                               context.toastInfo("Location Updated");
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => CupertinoAlertDialog(
+                                        title: Text("Title"),
+                                        content: Text("Content"),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            onPressed: () {},
+                                            child: Text("Ok"),
+                                          ),
+                                          FlatButton(
+                                            onPressed: () {},
+                                            child: Text("Cancel"),
+                                          )
+                                        ],
+                                      ),
+                                  barrierDismissible: true);
                             },
                             child: Container(
                               padding: EdgeInsets.only(

@@ -19,11 +19,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         getPermissionStatus();
 
         Position _position;
-        Geolocator geoLocator = Geolocator();
-        _position = await geoLocator.getCurrentPosition(
+        Geolocator _geoLocator = Geolocator();
+        _position = await _geoLocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.best);
 
-        List<Placemark> _placemark = await geoLocator.placemarkFromCoordinates(_position.latitude, _position.longitude);
+        List<Placemark> _placemark = await _geoLocator.placemarkFromCoordinates(_position.latitude, _position.longitude);
 
         print(_placemark[0].country);
         print(_placemark[0].position);
