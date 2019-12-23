@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/resources/dimens.dart';
-import 'package:pojok_islam/ui/home/home_page.dart';
+part of 'home_widget.dart';
 
 class TimeShalatAdapter extends StatelessWidget {
   const TimeShalatAdapter({Key key}) : super(key: key);
@@ -61,9 +57,9 @@ class TimeShalatAdapter extends StatelessWidget {
 
           Color textColor;
           if (listIsPassed.contains(index)) {
-            textColor = Pallette.textDisable;
+            textColor = Palette.textDisable;
           } else if (listNotYet.contains(index)) {
-            textColor = Pallette.textPrimary;
+            textColor = Palette.textPrimary;
           } else {
             textColor = Colors.white;
           }
@@ -71,23 +67,23 @@ class TimeShalatAdapter extends StatelessWidget {
           var textSizeTitle = 0.0;
           var textSizeSummary = 0.0;
           var contentPadding = EdgeInsets.fromLTRB(
-              Dimens.space4, Dimens.space2, Dimens.space4, Dimens.space2);
+              Dimens.Space4, Dimens.Space2, Dimens.Space4, Dimens.Space2);
           var contentBoxShadow = new BoxShadow(
               spreadRadius: 5, color: Colors.black12, blurRadius: 5);
           if (listIsPassed.contains(index) || listNotYet.contains(index)) {
-            textSizeTitle = Dimens.h4;
-            textSizeSummary = Dimens.h6;
+            textSizeTitle = Dimens.Subheading1;
+            textSizeSummary = Dimens.Body1;
             contentPadding = EdgeInsets.fromLTRB(
-                Dimens.space2, Dimens.space2, Dimens.space2, Dimens.space2);
+                Dimens.Space2, Dimens.Space2, Dimens.Space2, Dimens.Space2);
             contentBoxShadow = new BoxShadow(
                 spreadRadius: 0, color: Colors.transparent, blurRadius: 0);
           } else {
-            textSizeTitle = Dimens.h3;
-            textSizeSummary = Dimens.h5;
+            textSizeTitle = Dimens.Subheading1;
+            textSizeSummary = Dimens.Body1;
             contentPadding = EdgeInsets.fromLTRB(
-                Dimens.space8, Dimens.space2, Dimens.space8, Dimens.space2);
+                Dimens.Space8, Dimens.Space2, Dimens.Space8, Dimens.Space2);
             contentBoxShadow = new BoxShadow(
-                spreadRadius: Dimens.space2,
+                spreadRadius: Dimens.Space2,
                 color: Colors.black12,
                 blurRadius: 5);
           }
@@ -98,14 +94,14 @@ class TimeShalatAdapter extends StatelessWidget {
                 color:
                     (listIsPassed.contains(index) || listNotYet.contains(index))
                         ? Colors.transparent
-                        : Pallette.colorPrimaryDark,
+                        : Palette.colorPrimaryDark,
                 borderRadius: new BorderRadius.only(
-                    bottomLeft: const Radius.circular(Dimens.space16),
-                    bottomRight: const Radius.circular(Dimens.space16),
-                    topLeft: const Radius.circular(Dimens.space16),
-                    topRight: const Radius.circular(Dimens.space16))),
+                    bottomLeft: const Radius.circular(Dimens.Space16),
+                    bottomRight: const Radius.circular(Dimens.Space16),
+                    topLeft: const Radius.circular(Dimens.Space16),
+                    topRight: const Radius.circular(Dimens.Space16))),
             padding: contentPadding,
-            margin: EdgeInsets.all(Dimens.space2),
+            margin: EdgeInsets.all(Dimens.Space2),
             child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,

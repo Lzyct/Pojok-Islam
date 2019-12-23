@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/ui/home/bloc/bloc.dart';
 import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
 
-class Home extends StatelessWidget {
-  const Home({Key key}) : super(key: key);
+import 'bloc/home_bloc.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +59,7 @@ class Home extends StatelessWidget {
 class HeaderView extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final double minHeight;
+  HomeBloc _homeBloc;
 
   HeaderView({@required this.expandedHeight, this.minHeight});
 
@@ -66,8 +68,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final cardTopPosition = expandedHeight / 1.35 - shrinkOffset;
 
-    // ignore: close_sinks
-    final _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
 
     return Stack(
       fit: StackFit.expand,
@@ -85,7 +86,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(
-                        left: Dimens.space16, top: Dimens.space16),
+                        left: Dimens.Space16, top: Dimens.Space16),
                     child: Text(
                       "Pojok Islam",
                       style: TextStyle(
@@ -99,19 +100,19 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                   Spacer(),
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: Dimens.space16),
+                    margin: EdgeInsets.only(top: Dimens.Space16),
                     decoration: new BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
                         new BoxShadow(
                             color: Colors.black12,
-                            blurRadius: Dimens.space2,
-                            spreadRadius: Dimens.elevation,
-                            offset: Offset(0.0, Dimens.space2)),
+                            blurRadius: Dimens.Space2,
+                            spreadRadius: Dimens.Elevation,
+                            offset: Offset(0.0, Dimens.Space2)),
                       ],
                       borderRadius: new BorderRadius.only(
-                        bottomLeft: const Radius.circular(Dimens.buttonRound),
-                        topLeft: const Radius.circular(Dimens.buttonRound),
+                        bottomLeft: const Radius.circular(Dimens.ButtonRound),
+                        topLeft: const Radius.circular(Dimens.ButtonRound),
                       ),
                     ),
                     child: Row(
@@ -120,7 +121,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                             onTap: () {
                               _homeBloc.add(GetLocationEvent());
                               context.toastInfo("Location Updated");
-                              showDialog(
+                              /*showDialog(
                                   context: context,
                                   builder: (_) => CupertinoAlertDialog(
                                         title: Text("Title"),
@@ -136,37 +137,40 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                           )
                                         ],
                                       ),
-                                  barrierDismissible: true);
+                                  barrierDismissible: true);*/
                             },
                             child: Container(
                               padding: EdgeInsets.only(
-                                  left: Dimens.space4,
-                                  right: Dimens.space4,
-                                  top: Dimens.space8,
-                                  bottom: Dimens.space8),
+                                  left: Dimens.Space4,
+                                  right: Dimens.Space4,
+                                  top: Dimens.Space8,
+                                  bottom: Dimens.Space8),
                               child: Row(
                                 children: <Widget>[
                                   Image(
                                     image: AssetImage(
                                         'assets/images/ic_location.png'),
-                                    width: Dimens.smallIcon,
-                                    height: Dimens.smallIcon,
-                                    color: Pallette.colorPrimary,
+                                    width: Dimens.SmallIcon,
+                                    height: Dimens.SmallIcon,
+                                    color: Palette.colorPrimary,
                                   ),
-                                  BlocBuilder<HomeBloc, HomeState>(
-                                      builder: (context, homeState) {
-                                    if (homeState is GetLocationState) {
-                                      return Text(
-                                        homeState.locationValue.toString(),
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: Dimens.h4,
-                                            color: Pallette.colorPrimary),
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  }),
+                                  BlocListener<HomeBloc, HomeState>(
+                                    listener: (context, homeState) {},
+                                    child: BlocBuilder<HomeBloc, HomeState>(
+                                        builder: (context, homeState) {
+                                      if (homeState is GetLocationState) {
+                                        print("piyu" + homeState.locationValue);
+                                        return Text(
+                                          homeState.locationValue.toString(),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: Dimens.Body1,
+                                              color: Palette.colorPrimary),
+                                        );
+                                      } else
+                                        return Container();
+                                    }),
+                                  ),
                                 ],
                               ),
                             )),
@@ -186,15 +190,15 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.fromLTRB(
-                                Dimens.space16,
+                                Dimens.Space16,
                                 context.heightInPercent(context, 4),
-                                Dimens.space16,
+                                Dimens.Space16,
                                 0),
                             child: Text(
                               Strings.haditsText,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: Dimens.space16,
+                                  fontSize: Dimens.Space16,
                                   fontStyle: FontStyle.italic),
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
@@ -203,14 +207,14 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                           ),
                           Container(
                             width: double.infinity,
-                            margin: EdgeInsets.only(top: Dimens.space2),
+                            margin: EdgeInsets.only(top: Dimens.Space2),
                             padding: EdgeInsets.fromLTRB(
-                                0, Dimens.space16, Dimens.smallIcon, 0),
+                                0, Dimens.Space16, Dimens.SmallIcon, 0),
                             child: Text(
                               Strings.haditsRiwayah,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: Dimens.h5,
+                                  fontSize: Dimens.Caption,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
                             ),
@@ -228,7 +232,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
           child: AnimatedContainer(
               duration: Duration(milliseconds: 500),
               margin:
-                  EdgeInsets.only(left: Dimens.space16, right: Dimens.space16),
+                  EdgeInsets.only(left: Dimens.Space16, right: Dimens.Space16),
               child: Opacity(
                 opacity: 1,
                 child: Card(
@@ -239,28 +243,29 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                       children: <Widget>[
                         Container(
                             width: context.widthInPercent(context, 40),
-                            padding: EdgeInsets.all(Dimens.space8),
+                            padding: EdgeInsets.all(Dimens.Space8),
                             decoration: new BoxDecoration(
-                                color: Pallette.colorPrimaryDark,
+                                color: Palette.colorPrimaryDark,
                                 borderRadius: new BorderRadius.only(
                                     bottomLeft:
-                                        const Radius.circular(Dimens.space16),
+                                        const Radius.circular(Dimens.Space16),
                                     bottomRight:
-                                        const Radius.circular(Dimens.space16))),
+                                        const Radius.circular(Dimens.Space16))),
                             child: Column(
                               children: <Widget>[
                                 Text(
                                   "13 Syawal 1440H",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: Dimens.h4,
+                                      fontSize: Dimens.Body1,
                                       color: Colors.white),
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
                                   "Puasa Ayyaumul Bid",
                                   style: TextStyle(
-                                      fontSize: Dimens.h6, color: Colors.white),
+                                      fontSize: Dimens.Caption,
+                                      color: Colors.white),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -270,18 +275,18 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                           width: double.infinity,
                           height: context.heightInPercent(context, 8.5),
                           margin: EdgeInsets.only(
-                              left: Dimens.space8,
-                              right: Dimens.space8,
-                              top: Dimens.space8),
+                              left: Dimens.Space8,
+                              right: Dimens.Space8,
+                              top: Dimens.Space8),
                           child: TimeShalatAdapter(),
                         )),
                         Container(
                           width: double.infinity,
-                          padding: EdgeInsets.all(Dimens.space8),
+                          padding: EdgeInsets.all(Dimens.Space8),
                           child: Text(
                             "Lihat Semua",
                             style: TextStyle(
-                                color: Pallette.colorPrimary,
+                                color: Palette.colorPrimary,
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.end,
                           ),

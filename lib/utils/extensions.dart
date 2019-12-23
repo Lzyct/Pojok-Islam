@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pojok_islam/resources/colors.dart';
+import 'package:pojok_islam/resources/dimens.dart';
 
 extension ContextExtensions on BuildContext {
   double widthInPercent(BuildContext context, double percent) {
@@ -18,8 +19,8 @@ extension ContextExtensions on BuildContext {
     Fluttertoast.showToast(
         msg: message,
         backgroundColor: Colors.white,
-        textColor: Pallette.colorPrimary,
-        gravity: ToastGravity.TOP,
+        textColor: Palette.colorPrimary,
+        gravity: ToastGravity.CENTER,
         timeInSecForIos: 1);
   }
 
@@ -28,7 +29,38 @@ extension ContextExtensions on BuildContext {
         msg: message,
         backgroundColor: Colors.red[300],
         textColor: Colors.white,
-        gravity: ToastGravity.TOP,
+        gravity: ToastGravity.CENTER,
         timeInSecForIos: 1);
   }
+}
+
+extension WidgetExtensions on Widget {
+  padding(EdgeInsets edgeInsets) => Padding(padding: edgeInsets, child: this);
+
+  cardView(EdgeInsets margin, EdgeInsets padding) => Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(Dimens.Space16)),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10.0, // has the effect of softening the shadow
+            spreadRadius: 0.5, // has the effect of extending the shadow
+            offset: Offset(
+              0, // horizontal, move right 10
+              0, // vertical, move down 10
+            ),
+          )
+        ],
+      ),
+      child: this,
+      margin: margin,
+      padding: padding);
+
+  marginVisible({EdgeInsets edgeInsets, bool isVisible = true}) => Visibility(
+        visible: isVisible,
+        child: Container(
+            margin: (edgeInsets == null) ? EdgeInsets.all(0) : edgeInsets,
+            child: this),
+      );
 }

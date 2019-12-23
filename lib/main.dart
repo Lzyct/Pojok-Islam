@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/ui/main_page.dart';
+import 'package:pojok_islam/ui/splashscreen/splashscreen_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Pallette.colorPrimary,
-          primarySwatch: Pallette.colorPrimary,
-          splashColor: Pallette.colorPrimary.withOpacity(0.2),
+          primaryColor: Palette.colorPrimary,
+          primarySwatch: Palette.colorPrimary,
+          splashColor: Palette.colorPrimary.withOpacity(0.2),
           splashFactory: InkRipple.splashFactory),
-      home: MainScreen(),
+      home: SplashScreenPage(),
     );
   }
 }

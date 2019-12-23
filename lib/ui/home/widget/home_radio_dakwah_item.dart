@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/resources/dimens.dart';
-import 'package:pojok_islam/resources/strings.dart';
-import 'package:pojok_islam/utils/extensions.dart';
+part of 'home_widget.dart';
 
 class RadioDakwah extends StatelessWidget {
   const RadioDakwah({Key key}) : super(key: key);
@@ -13,7 +9,7 @@ class RadioDakwah extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.fromLTRB(
-              Dimens.space16, Dimens.space8, Dimens.space16, Dimens.space8),
+              Dimens.Space16, Dimens.Space8, Dimens.Space16, Dimens.Space8),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -21,14 +17,14 @@ class RadioDakwah extends StatelessWidget {
               Text(
                 Strings.radioDakwah,
                 style: TextStyle(
-                    color: Pallette.colorPrimary,
-                    fontSize: Dimens.h3,
+                    color: Palette.colorPrimary,
+                    fontSize: Dimens.Subheading1,
                     fontWeight: FontWeight.bold),
               ),
               Spacer(),
               Text(
                 Strings.seeAll,
-                style: TextStyle(color: Pallette.colorPrimary),
+                style: TextStyle(color: Palette.colorPrimary),
               )
             ],
           ),
@@ -36,7 +32,7 @@ class RadioDakwah extends StatelessWidget {
         Container(
           width: double.infinity,
           height: context.heightInPercent(context, 14),
-          margin: EdgeInsets.only(left: Dimens.space8, right: Dimens.space8),
+          margin: EdgeInsets.only(left: Dimens.Space8, right: Dimens.Space8),
           child: ListView.builder(
               itemCount: 4,
               shrinkWrap: true,
@@ -46,7 +42,7 @@ class RadioDakwah extends StatelessWidget {
                     width: context.widthInPercent(context, 50),
                     child: Card(
                         child: Container(
-                      padding: EdgeInsets.all(Dimens.space16),
+                      padding: EdgeInsets.all(Dimens.Space16),
                       child: Text(
                           "test testtesttesttesttesttesttesttesttesttesttesttesttest"),
                     )));

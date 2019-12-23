@@ -9,7 +9,7 @@ class Settings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Pengaturan"),
-        backgroundColor: Pallette.colorPrimary,
+        backgroundColor: Palette.colorPrimary,
       ),
     );
   }

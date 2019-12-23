@@ -1,29 +1,33 @@
+import 'dart:developer' as console;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/ui/home/bloc/bloc.dart';
+import 'package:pojok_islam/ui/home/bloc/home_bloc.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
 import 'package:pojok_islam/ui/settings/settings_page.dart';
-import 'dart:developer' as console;
-import 'package:flutter/services.dart';
 
-class MainScreen extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
   final List<Widget> _fragment = [
-    
     BlocProvider<HomeBloc>(
-        builder:  (context)=> HomeBloc(),
-        child: Home()), Settings()];
+      create: (context) => HomeBloc(),
+      child: HomePage(),
+    ),
+    Settings()
+  ];
   @override
   Widget build(BuildContext context) {
     //set transparent statusbar on android
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark));
 
     return Scaffold(
       body: _fragment[_currentTabIndex],
@@ -35,28 +39,26 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: new ImageIcon(
               AssetImage('assets/images/ic_home.png'),
-              color:
-                  _currentTabIndex == 0 ? Pallette.colorPrimary : Colors.grey,
+              color: _currentTabIndex == 0 ? Palette.colorPrimary : Colors.grey,
             ),
             title: new Text(
               'Beranda',
               style: TextStyle(
                 color:
-                    _currentTabIndex == 0 ? Pallette.colorPrimary : Colors.grey,
+                    _currentTabIndex == 0 ? Palette.colorPrimary : Colors.grey,
               ),
             ),
           ),
           BottomNavigationBarItem(
             icon: new ImageIcon(
               AssetImage('assets/images/ic_settings.png'),
-              color:
-                  _currentTabIndex == 1 ? Pallette.colorPrimary : Colors.grey,
+              color: _currentTabIndex == 1 ? Palette.colorPrimary : Colors.grey,
             ),
             title: new Text(
               'Pengaturan',
               style: TextStyle(
                 color:
-                    _currentTabIndex == 1 ? Pallette.colorPrimary : Colors.grey,
+                    _currentTabIndex == 1 ? Palette.colorPrimary : Colors.grey,
               ),
             ),
           )

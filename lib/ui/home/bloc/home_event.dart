@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+part of 'home_bloc.dart';
 
 @immutable
 abstract class HomeEvent extends Equatable {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-class Pallette {
+class Palette {
   static const MaterialColor colorPrimary = const MaterialColor(
     0xff7b68ee,
     const <int, Color>{
-      50: const Color(0xff7b68ee),
+      50: const Color(0x447b68ee),
       100: const Color(0xff7b68ee),
       200: const Color(0xff7b68ee),
       300: const Color(0xff7b68ee),
