@@ -10,10 +10,17 @@ This project using [Flutter Framework](https://flutter.dev/).
  + [ ]  [http](https://pub.dev/packages/http)
  + [x]  [intl](https://pub.dev/packages/intl)
  + [ ]  [shimmer](https://pub.dev/packages/shimmer)
- + Add Later
+ + [x]  [geolocator](https://pub.dev/packages/geolocator)
+ + [x]  [http](https://pub.dev/packages/http)
+ + [x]  [equatable](https://pub.dev/packages/equatable)
+ + [x]  [permission_handler](https://pub.dev/packages/permission_handler)
+ + [x]  [fluttertoast](https://pub.dev/packages/fluttertoast)
+ + [x]  [shared_preferences](https://pub.dev/packages/shared_preferences)
+ 
 ## Todo
++ [x]  Splash Screen, OnBoarding Screen
 + [x]  Get User Location
-+ [ ]  Get Time Shalat,Sunnah Day and Date in Hijr Calendar
++ [ ]  Get Time Shalat, Sunnah Day and Date in Hijr Calendar
 + [ ]  Show Notification/Alarm When is Time For Shalat
 + [ ]  Show Nearby Mosque
 + [ ]  Show Daily Hadits
