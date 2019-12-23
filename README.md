@@ -1,13 +1,10 @@
 # POJOK ISLAM
 This project using [Flutter Framework](https://flutter.dev/).
 
-![image](https://github.com/ukieTux/Pojok-Islam/blob/master/screenshoot/screen_1.png?raw=true)
-
-
+![Farmers Market Finder Demo](https://github.com/ukieTux/Pojok-Islam/blob/master/screenshoot/screen.gif)
 
 ## Using Library
  + [x]  [BLoC](https://pub.dev/packages/bloc)
- + [ ]  [http](https://pub.dev/packages/http)
  + [x]  [intl](https://pub.dev/packages/intl)
  + [ ]  [shimmer](https://pub.dev/packages/shimmer)
  + [x]  [geolocator](https://pub.dev/packages/geolocator)
