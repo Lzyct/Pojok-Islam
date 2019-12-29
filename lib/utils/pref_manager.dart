@@ -12,11 +12,11 @@ class PrefManager {
 
   PrefManager(this.preferences);
 
-  bool isFirst() => preferences.containsKey(kOnBoarding)
+  bool isNotFirst() => preferences.containsKey(kOnBoarding)
       ? preferences.getBool(kOnBoarding ?? false)
       : false;
 
-  Future<bool> setIsFirst(bool _isFirst) =>
+  Future<bool> setIsNotFirst(bool _isFirst) =>
       preferences.setBool(kOnBoarding, _isFirst);
 
   String getString(String _key) =>

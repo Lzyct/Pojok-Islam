@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/main_page.dart';
@@ -53,8 +54,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     _prefManager = PrefManager(await SharedPreferences.getInstance());
 
     Future.delayed(Duration(seconds: 2), () {
-      print("piyu $_prefManager.isFirst()");
-      if (!_prefManager.isFirst()) {
+      Logger().d("piyu $_prefManager.isFirst()");
+      if (!_prefManager.isNotFirst()) {
         Route home = MaterialPageRoute(builder: (context) => OnBoardingPage());
         Navigator.pushReplacement(context, home);
       } else {

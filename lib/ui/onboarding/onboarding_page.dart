@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/main_page.dart';
 import 'package:pojok_islam/ui/onboarding/widget/onboarding_item.dart';
+import 'package:pojok_islam/utils/pref_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 ///*********************************************
 /// Created by ukietux on 2019-12-19 with ♥
@@ -20,6 +23,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   int previousPageValue = 0;
   PageController controller;
   double _moveBar = 0.0;
+  PrefManager _prefManager;
 
   final List<Widget> introWidgetsList = <Widget>[
     OnBoardingItem(
@@ -94,6 +98,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               child: FloatingActionButton(
                 backgroundColor: Palette.colorPrimary,
                 onPressed: () {
+                  _prefManager.setIsNotFirst(true);
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => MainPage()));
                 },
@@ -130,7 +135,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   }
 
   void getChangedPageAndMoveBar(int page) {
-    print('page is $page');
+    Logger().d('page is $page');
 
     if (previousPageValue == 0) {
       previousPageValue = page;
@@ -144,9 +149,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         _moveBar = _moveBar - 0.14;
       }
     }
-
     setState(() {
       currentPageValue = page;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  _loadSettings() async {
+    _prefManager = PrefManager(await SharedPreferences.getInstance());
   }
 }

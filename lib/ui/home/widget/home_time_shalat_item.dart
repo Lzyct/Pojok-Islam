@@ -34,24 +34,24 @@ class TimeShalatAdapter extends StatelessWidget {
                 shalatTime.hour, shalatTime.minute);
             if (timeNow.isAfter(shalatTime)) {
               listIsPassed.add(i);
-              print("passed");
-              print("time now : " + timeNow.toString());
-              print("time shalat : " +
+              /*Logger().d("passed");
+              Logger().d("time now : " + timeNow.toString());
+              Logger().d("time shalat : " +
                   listShalat[i].shalatName +
-                  shalatTime.toString());
+                  shalatTime.toString());*/
             } else {
-              print("next : " + nextTime.toString());
+//              Logger().d("next : " + nextTime.toString());
               if (nextTime == null) {
                 nextTime = i;
               } else if (nextTime != i) {
                 listNotYet.add(i);
               }
 
-              print("not yet");
-              print("time now : " + timeNow.toString());
-              print("time shalat : " +
+              /*Logger().d("not yet");
+              Logger().d("time now : " + timeNow.toString());
+              Logger().d("time shalat : " +
                   listShalat[i].shalatName +
-                  shalatTime.toString());
+                  shalatTime.toString());*/
             }
           }
 

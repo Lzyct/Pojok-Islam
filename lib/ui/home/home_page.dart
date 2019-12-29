@@ -2,73 +2,85 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
+import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
+import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
+import 'package:pojok_islam/ui/home/widget/home_time_shalat_loading.dart';
 import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
-
-import 'bloc/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ignore: close_sinks
-    final _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc.add(GetLocationEvent());
+    BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
 
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverPersistentHeader(
-          delegate: HeaderView(
-              expandedHeight: context.heightInPercent(context, 38),
-              minHeight: context.widthInPercent(context, 35)),
-          pinned: true,
-          floating: false,
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            Container(
-              margin:
-                  EdgeInsets.only(top: context.heightInPercent(context, 14)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        NearbyMosque(),
-                        HaditsCollections(),
-                        RadioDakwah(),
-                      ],
-                    ),
-                  )
-                ],
+    return BlocBuilder<LocationBloc, LocationState>(
+        builder: (context, location) {
+      //get prayer month
+      var _location = (location as GetLocationState).locationValue.split(",");
+      var params = Map<String, String>();
+      params['kota'] = _location[0];
+      params['negara'] = _location[1];
+      params['method'] = '8';
+      BlocProvider.of<PrayerTimeBloc>(context).add(GetPrayerTodayEvent(params));
+      Logger().d("debug : getPrayerMonth $params");
+
+      return CustomScrollView(
+        slivers: <Widget>[
+          SliverPersistentHeader(
+            delegate: HeaderView(
+                expandedHeight: context.heightInPercent(context, 38),
+                minHeight: context.widthInPercent(context, 35),
+                location:
+                    (location as GetLocationState).locationValue.toString()),
+            pinned: true,
+            floating: true,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin:
+                    EdgeInsets.only(top: context.heightInPercent(context, 14)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          NearbyMosque(),
+                          HaditsCollections(),
+                          RadioDakwah(),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ]),
-        )
-      ],
-    );
+            ]),
+          )
+        ],
+      );
+    });
   }
 }
 
 class HeaderView extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final double minHeight;
-  HomeBloc _homeBloc;
+  final String location;
 
-  HeaderView({@required this.expandedHeight, this.minHeight});
+  HeaderView({@required this.expandedHeight, this.minHeight, this.location});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final cardTopPosition = expandedHeight / 1.35 - shrinkOffset;
-
-    _homeBloc = BlocProvider.of<HomeBloc>(context);
 
     return Stack(
       fit: StackFit.expand,
@@ -119,25 +131,26 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                       children: <Widget>[
                         GestureDetector(
                             onTap: () {
-                              _homeBloc.add(GetLocationEvent());
+                              BlocProvider.of<LocationBloc>(context)
+                                  .add(GetLocationEvent());
                               context.toastInfo("Location Updated");
                               /*showDialog(
-                                  context: context,
-                                  builder: (_) => CupertinoAlertDialog(
-                                        title: Text("Title"),
-                                        content: Text("Content"),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            onPressed: () {},
-                                            child: Text("Ok"),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {},
-                                            child: Text("Cancel"),
-                                          )
-                                        ],
-                                      ),
-                                  barrierDismissible: true);*/
+                                    context: context,
+                                    builder: (_) => CupertinoAlertDialog(
+                                          title: Text("Title"),
+                                          content: Text("Content"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              onPressed: () {},
+                                              child: Text("Ok"),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () {},
+                                              child: Text("Cancel"),
+                                            )
+                                          ],
+                                        ),
+                                    barrierDismissible: true);*/
                             },
                             child: Container(
                               padding: EdgeInsets.only(
@@ -154,22 +167,12 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                     height: Dimens.SmallIcon,
                                     color: Palette.colorPrimary,
                                   ),
-                                  BlocListener<HomeBloc, HomeState>(
-                                    listener: (context, homeState) {},
-                                    child: BlocBuilder<HomeBloc, HomeState>(
-                                        builder: (context, homeState) {
-                                      if (homeState is GetLocationState) {
-                                        print("piyu" + homeState.locationValue);
-                                        return Text(
-                                          homeState.locationValue.toString(),
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: Dimens.Body1,
-                                              color: Palette.colorPrimary),
-                                        );
-                                      } else
-                                        return Container();
-                                    }),
+                                  Text(
+                                    location,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: Dimens.Body1,
+                                        color: Palette.colorPrimary),
                                   ),
                                 ],
                               ),
@@ -235,64 +238,75 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                   EdgeInsets.only(left: Dimens.Space16, right: Dimens.Space16),
               child: Opacity(
                 opacity: 1,
-                child: Card(
-                    elevation: 4,
-                    child: SizedBox(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Container(
-                            width: context.widthInPercent(context, 40),
-                            padding: EdgeInsets.all(Dimens.Space8),
-                            decoration: new BoxDecoration(
-                                color: Palette.colorPrimaryDark,
-                                borderRadius: new BorderRadius.only(
-                                    bottomLeft:
-                                        const Radius.circular(Dimens.Space16),
-                                    bottomRight:
-                                        const Radius.circular(Dimens.Space16))),
+                child: BlocBuilder<PrayerTimeBloc, PrayerTimeState>(
+                    builder: (context, prayerTime) {
+                  if (prayerTime is LoadingState) {
+                    Logger().d("initial");
+                    return HomeTimeShalatLoading();
+                  } else if (prayerTime is GetPrayerTodayState) {
+                    Logger().d("getPrayerMonthState");
+                    return Card(
+                        elevation: 4,
+                        child: SizedBox(
                             child: Column(
-                              children: <Widget>[
-                                Text(
-                                  "13 Syawal 1440H",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Dimens.Body1,
-                                      color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  "Puasa Ayyaumul Bid",
-                                  style: TextStyle(
-                                      fontSize: Dimens.Caption,
-                                      color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                                width: context.widthInPercent(context, 50),
+                                padding: EdgeInsets.all(Dimens.Space8),
+                                decoration: new BoxDecoration(
+                                    color: Palette.colorPrimaryDark,
+                                    borderRadius: new BorderRadius.only(
+                                        bottomLeft: const Radius.circular(
+                                            Dimens.Space16),
+                                        bottomRight: const Radius.circular(
+                                            Dimens.Space16))),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "${prayerTime.responsePrayerToday.result.tanggal.detailHijriah.tanggal} ${prayerTime.responsePrayerToday.result.tanggal.detailHijriah.bulan} ${prayerTime.responsePrayerToday.result.tanggal.detailHijriah.tahun}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: Dimens.Body1,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "Puasa Ayyaumul Bid",
+                                      style: TextStyle(
+                                          fontSize: Dimens.Caption,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )),
+                            Flexible(
+                                child: Container(
+                              width: double.infinity,
+                              height: context.heightInPercent(context, 8.5),
+                              margin: EdgeInsets.only(
+                                  left: Dimens.Space8,
+                                  right: Dimens.Space8,
+                                  top: Dimens.Space8),
+                              child: TimeShalatAdapter(),
                             )),
-                        Flexible(
-                            child: Container(
-                          width: double.infinity,
-                          height: context.heightInPercent(context, 8.5),
-                          margin: EdgeInsets.only(
-                              left: Dimens.Space8,
-                              right: Dimens.Space8,
-                              top: Dimens.Space8),
-                          child: TimeShalatAdapter(),
-                        )),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(Dimens.Space8),
-                          child: Text(
-                            "Lihat Semua",
-                            style: TextStyle(
-                                color: Palette.colorPrimary,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.end,
-                          ),
-                        )
-                      ],
-                    ))),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(Dimens.Space8),
+                              child: Text(
+                                "Lihat Semua",
+                                style: TextStyle(
+                                    color: Palette.colorPrimary,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.end,
+                              ),
+                            )
+                          ],
+                        )));
+                  } else {
+                    return Container();
+                  }
+                }),
               )),
         ),
       ],

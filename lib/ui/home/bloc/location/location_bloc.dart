@@ -2,31 +2,26 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logger/logger.dart';
+import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-part 'home_event.dart';
-part 'home_state.dart';
+part 'location_event.dart';
+part 'location_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class LocationBloc extends Bloc<LocationEvent, LocationState> {
   @override
-  HomeState get initialState => GetLocationState("Unknown Location");
+  LocationState get initialState => GetLocationState("Unknown Location");
 
   @override
-  Stream<HomeState> mapEventToState(
-    HomeEvent event,
-  ) async* {
-    try {
-      if (event is GetLocationEvent) {
-        getPermissionStatus();
-        var _placeMarks = await getLocation();
+  Stream<LocationState> mapEventToState(LocationEvent event) async* {
+    if (event is GetLocationEvent) {
+      getPermissionStatus();
+      var _placeMarks = await getLocation();
 
-        yield GetLocationState(
-            _placeMarks[0].locality + " , " + _placeMarks[0].country);
-      }
-    } catch (_) {
-      print(_);
+      yield GetLocationState(
+          _placeMarks[0].locality + " , " + _placeMarks[0].country);
     }
   }
 
@@ -39,17 +34,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Placemark> _placemark = await _geoLocator.placemarkFromCoordinates(
         _position.latitude, _position.longitude);
 
-    print(_placemark[0].country);
-    print(_placemark[0].position);
-    print(_placemark[0].locality);
-    print(_placemark[0].administrativeArea);
-    print(_placemark[0].postalCode);
-    print(_placemark[0].name);
-    print(_placemark[0].subAdministrativeArea);
-    print(_placemark[0].isoCountryCode);
-    print(_placemark[0].subLocality);
-    print(_placemark[0].subThoroughfare);
-    print(_placemark[0].thoroughfare);
+    Logger().d(_placemark[0].country);
+    Logger().d(_placemark[0].position);
+    Logger().d(_placemark[0].locality);
+    Logger().d(_placemark[0].administrativeArea);
+    Logger().d(_placemark[0].postalCode);
+    Logger().d(_placemark[0].name);
+    Logger().d(_placemark[0].subAdministrativeArea);
+    Logger().d(_placemark[0].isoCountryCode);
+    Logger().d(_placemark[0].subLocality);
+    Logger().d(_placemark[0].subThoroughfare);
+    Logger().d(_placemark[0].thoroughfare);
     return _placemark;
   }
 
@@ -57,7 +52,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       PermissionStatus _permission = await PermissionHandler()
           .checkPermissionStatus(PermissionGroup.locationWhenInUse);
-      print(_permission);
+      Logger().d(_permission);
       if (_permission == PermissionStatus.granted) {
       } else if (_permission == PermissionStatus.denied ||
           _permission == PermissionStatus.disabled ||
@@ -68,7 +63,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         getPermissionStatus();
       }
     } catch (e) {
-      print(e);
+      Logger().d(e);
     }
   }
 }

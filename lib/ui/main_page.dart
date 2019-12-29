@@ -1,10 +1,12 @@
-import 'dart:developer' as console;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
+import 'package:pojok_islam/data/repository/prayer_time_repo.dart';
+import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
 import 'package:pojok_islam/resources/colors.dart';
-import 'package:pojok_islam/ui/home/bloc/home_bloc.dart';
+import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
+import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
 import 'package:pojok_islam/ui/settings/settings_page.dart';
 
@@ -15,13 +17,22 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
+
   final List<Widget> _fragment = [
-    BlocProvider<HomeBloc>(
-      create: (context) => HomeBloc(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
+        BlocProvider<PrayerTimeBloc>(
+            create: (context) => PrayerTimeBloc(
+                  prayerTimeRepo:
+                      PrayerTimeRepo(pojokIslamClient: PojokIslamClient()),
+                ))
+      ],
       child: HomePage(),
     ),
     Settings()
   ];
+
   @override
   Widget build(BuildContext context) {
     //set transparent statusbar on android
@@ -69,7 +80,7 @@ class _MainPageState extends State<MainPage> {
 
   void onTabTapped(int index) {
     setState(() {
-      console.log(index.toString());
+      Logger().d(index.toString());
       _currentTabIndex = index;
     });
   }
