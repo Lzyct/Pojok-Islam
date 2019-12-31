@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:pojok_islam/data/repository/prayer_time_repo.dart';
+import 'package:pojok_islam/data/source/local/prayer_time_db.dart';
 import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
@@ -24,8 +25,9 @@ class _MainPageState extends State<MainPage> {
         BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
         BlocProvider<PrayerTimeBloc>(
             create: (context) => PrayerTimeBloc(
-                  prayerTimeRepo:
-                      PrayerTimeRepo(pojokIslamClient: PojokIslamClient()),
+                  prayerTimeRepo: PrayerTimeRepo(
+                      pojokIslamClient: PojokIslamClient(),
+                      prayerTimeDb: PrayerTimeDb()),
                 ))
       ],
       child: HomePage(),

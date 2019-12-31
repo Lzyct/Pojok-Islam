@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
-import 'package:pojok_islam/data/models/models.dart';
-import 'package:pojok_islam/data/models/response/response_prayer_today.dart';
+import 'package:pojok_islam/data/models/entity/prayer_time_entity.dart';
+import 'package:pojok_islam/data/source/local/prayer_time_db.dart';
 import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
 
 ///*********************************************
@@ -12,21 +12,41 @@ import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
 /// © 2019 | All Right Reserved
 class PrayerTimeRepo {
   final PojokIslamClient pojokIslamClient;
+  final PrayerTimeDb prayerTimeDb;
 
-  PrayerTimeRepo({@required this.pojokIslamClient})
-      : assert(pojokIslamClient != null);
+  PrayerTimeRepo({@required this.pojokIslamClient, @required this.prayerTimeDb})
+      : assert(pojokIslamClient != null && prayerTimeDb != null);
 
-  Future<ResponsePrayerMonth> getPrayerMonth(
+  Future<List<PrayerTimeEntity>> getPrayerMonth(
       Map<String, String> _params) async {
     Logger().d("repoPrayerTime");
+    //check prayer time in db first
+    prayerTimeDb.getPrayerMonth().then((prayer) async {
+      Logger().e("lenght ${prayer.length}");
+      if (prayer.length <= 0) {
+        await pojokIslamClient
+            .getPrayerMonth(_params)
+            .then((response) => {prayerTimeDb.getPrayerMonth()});
+      }
+    });
 
-    return pojokIslamClient.getPrayerMonth(_params);
+    return prayerTimeDb.getPrayerMonth();
   }
 
-  Future<ResponsePrayerToday> getPrayerToday(
-      Map<String, String> _params) async {
-    Logger().d("repoPrayerTime");
-
-    return pojokIslamClient.getPrayerToday(_params);
+  Future<PrayerTimeEntity> getPrayerToday(Map<String, String> _params) async {
+    //check prayer time in db first
+    try {
+      await prayerTimeDb.getPrayerToday().then((prayer) async {
+        if (prayer == null) {
+          //if null get from API then save into db
+          await pojokIslamClient.getPrayerMonth(_params).then((response) async {
+            await prayerTimeDb.savePrayerTime(response);
+          });
+        }
+      });
+    } catch (e) {
+      Logger().e(e);
+    }
+    return prayerTimeDb.getPrayerToday();
   }
 }

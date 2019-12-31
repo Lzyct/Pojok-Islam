@@ -1,20 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pojok_islam/di/app.dart';
+import 'package:pojok_islam/di/api.dart';
+import 'package:pojok_islam/di/db_helper.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/ui/splashscreen/splashscreen_page.dart';
 
 GetIt getIt = GetIt.instance;
 
-void main() {
+main() {
   setupLocator();
   runApp(MyApp());
 }
 
 //setup DI
-void setupLocator() {
-  getIt.registerFactory<App>(() => App(Dio()));
+setupLocator() async {
+  getIt.registerFactory<API>(() => API(Dio()));
+  getIt.registerFactory<DbHelper>(() => DbHelper());
 }
 
 class MyApp extends StatelessWidget {

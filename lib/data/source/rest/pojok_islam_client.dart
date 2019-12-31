@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:pojok_islam/data/models/response/response_prayer_month.dart';
 import 'package:pojok_islam/data/models/response/response_prayer_today.dart';
-import 'package:pojok_islam/di/app.dart';
+import 'package:pojok_islam/di/api.dart';
 import 'package:pojok_islam/main.dart';
 
 ///*********************************************
@@ -15,7 +15,7 @@ import 'package:pojok_islam/main.dart';
 class PojokIslamClient {
   Future<ResponsePrayerMonth> getPrayerMonth(Map<String, String> params) async {
     try {
-      var app = getIt.get<App>();
+      var app = getIt.get<API>();
       Response response =
           await app.dio.get("prayerTime/month", queryParameters: params);
       Logger().d("response $response");
@@ -28,7 +28,7 @@ class PojokIslamClient {
 
   Future<ResponsePrayerToday> getPrayerToday(Map<String, String> params) async {
     try {
-      var app = getIt.get<App>();
+      var app = getIt.get<API>();
       Response response =
           await app.dio.get("prayerTime/today", queryParameters: params);
       Logger().d("response $response");

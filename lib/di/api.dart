@@ -6,14 +6,14 @@ import 'package:dio/dio.dart';
 /// github : https://www.github.com/ukieTux <(’_’<)
 ///*********************************************
 /// © 2019 | All Right Reserved
-class App {
+class API {
   Dio dio;
 
-  App(this.dio) {
+  API(this.dio) {
     dio.options
       ..baseUrl = "http://pojok-islam.ngrok.io/"
-      ..connectTimeout = 5000 //5s
-      ..receiveTimeout = 5000
+      ..connectTimeout = 60000 //5s
+      ..receiveTimeout = 60000
       ..validateStatus = (int status) {
         return status > 0;
       }

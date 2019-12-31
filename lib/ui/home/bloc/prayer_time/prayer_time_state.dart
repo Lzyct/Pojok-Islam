@@ -8,24 +8,22 @@ abstract class PrayerTimeState extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadingState extends PrayerTimeState {}
+class PrayerLoadingState extends PrayerTimeState {}
 
 class GetPrayerMonthState extends PrayerTimeState {
-  final ResponsePrayerMonth responsePrayerMonth;
+  final List<PrayerTimeEntity> prayerTimeEntity;
 
-  GetPrayerMonthState(this.responsePrayerMonth)
-      : assert(responsePrayerMonth != null);
+  GetPrayerMonthState(this.prayerTimeEntity) : assert(prayerTimeEntity != null);
 
   @override
-  List<Object> get props => [responsePrayerMonth];
+  List<Object> get props => [prayerTimeEntity];
 }
 
 class GetPrayerTodayState extends PrayerTimeState {
-  final ResponsePrayerToday responsePrayerToday;
+  final PrayerTimeEntity prayerTimeEntity;
 
-  GetPrayerTodayState(this.responsePrayerToday)
-      : assert(responsePrayerToday != null);
+  GetPrayerTodayState(this.prayerTimeEntity) : assert(prayerTimeEntity != null);
 
   @override
-  List<Object> get props => [responsePrayerToday];
+  List<Object> get props => [prayerTimeEntity];
 }

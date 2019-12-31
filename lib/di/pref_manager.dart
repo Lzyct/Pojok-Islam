@@ -8,6 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// © 2019 | All Right Reserved
 class PrefManager {
   String kOnBoarding = "onboarding";
+  String kLastLocation = "currentLocation";
+  String kCurrentMethod = "currentMethod";
+
   SharedPreferences preferences;
 
   PrefManager(this.preferences);
@@ -30,6 +33,20 @@ class PrefManager {
 
   Future<bool> setInt(String _key, int _value) =>
       preferences.setInt(_key, _value);
+
+  String getLastLocation() => preferences.containsKey(kLastLocation)
+      ? preferences.getString(kLastLocation ?? "")
+      : "";
+
+  Future<bool> setLastLocation(String _value) =>
+      preferences.setString(kLastLocation, _value);
+
+  String getCurrentMethod() => preferences.containsKey(kCurrentMethod)
+      ? preferences.getString(kCurrentMethod ?? "")
+      : "";
+
+  Future<bool> setCurrentMethod(String _value) =>
+      preferences.setString(kCurrentMethod, _value);
 
   Future<bool> logout() => preferences.clear();
 }

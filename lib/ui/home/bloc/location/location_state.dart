@@ -1,7 +1,10 @@
 part of 'location_bloc.dart';
 
 @immutable
-abstract class LocationState extends Equatable {}
+abstract class LocationState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class GetLocationState extends LocationState {
   final String locationValue;
@@ -11,3 +14,5 @@ class GetLocationState extends LocationState {
   @override
   List<Object> get props => [locationValue];
 }
+
+class GetLocationLoading extends LocationState {}

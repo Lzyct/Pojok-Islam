@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:pojok_islam/di/pref_manager.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/main_page.dart';
 import 'package:pojok_islam/ui/onboarding/widget/onboarding_item.dart';
-import 'package:pojok_islam/utils/pref_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ///*********************************************

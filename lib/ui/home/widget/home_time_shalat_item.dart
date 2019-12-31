@@ -1,17 +1,20 @@
 part of 'home_widget.dart';
 
 class TimeShalatAdapter extends StatelessWidget {
-  const TimeShalatAdapter({Key key}) : super(key: key);
+  final String prayerTime;
+  const TimeShalatAdapter({Key key, @required this.prayerTime})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var waktuShalat = prayerTime.split(";");
     List<TimeShalat> listShalat = []
-      ..add(TimeShalat("04:30", "Subuh"))
-      ..add(TimeShalat("06:05", "Syuruq"))
-      ..add(TimeShalat("12:05", "Dzuhur"))
-      ..add(TimeShalat("15:05", "Ashar"))
-      ..add(TimeShalat("18:08", "Maghrib"))
-      ..add(TimeShalat("19:15", "Isya"));
+      ..add(TimeShalat("${waktuShalat[0]}", "Subuh"))
+      ..add(TimeShalat("${waktuShalat[1]}", "Syuruq"))
+      ..add(TimeShalat("${waktuShalat[2]}", "Dzuhur"))
+      ..add(TimeShalat("${waktuShalat[3]}", "Ashar"))
+      ..add(TimeShalat("${waktuShalat[4]}", "Maghrib"))
+      ..add(TimeShalat("${waktuShalat[5]}", "Isya"));
 
     return Center(
       child: ListView.builder(

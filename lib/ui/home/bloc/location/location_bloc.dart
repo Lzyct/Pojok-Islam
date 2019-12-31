@@ -17,9 +17,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   @override
   Stream<LocationState> mapEventToState(LocationEvent event) async* {
     if (event is GetLocationEvent) {
+      yield GetLocationLoading();
       getPermissionStatus();
       var _placeMarks = await getLocation();
 
+      await Future.delayed(Duration(seconds: 2));
       yield GetLocationState(
           _placeMarks[0].locality + " , " + _placeMarks[0].country);
     }

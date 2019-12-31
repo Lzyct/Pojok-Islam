@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:pojok_islam/di/pref_manager.dart';
+import 'package:pojok_islam/main.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/ui/main_page.dart';
 import 'package:pojok_islam/ui/onboarding/onboarding_page.dart';
-import 'package:pojok_islam/utils/pref_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ///*********************************************
@@ -20,8 +21,6 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
-  PrefManager _prefManager;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +50,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
 
   _loadSettings() async {
-    _prefManager = PrefManager(await SharedPreferences.getInstance());
+    var initPrefManager = await SharedPreferences.getInstance();
+    getIt.registerFactory<PrefManager>(() => PrefManager(initPrefManager));
+
+    var prefManager = getIt.get<PrefManager>();
+    prefManager.setCurrentMethod("8"); // TODO set default method is 8
 
     Future.delayed(Duration(seconds: 2), () {
-      Logger().d("piyu $_prefManager.isFirst()");
-      if (!_prefManager.isNotFirst()) {
+      Logger().d("piyu $prefManager.isFirst()");
+      if (!prefManager.isNotFirst()) {
         Route home = MaterialPageRoute(builder: (context) => OnBoardingPage());
         Navigator.pushReplacement(context, home);
       } else {
