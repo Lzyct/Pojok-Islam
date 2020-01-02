@@ -21,3 +21,6 @@ Look up into [pubspec.yaml](https://github.com/ukieTux/Pojok-Islam/blob/master/p
 + [ ]  Show Radio Dakwah
 + [ ]  Create Player Radio Dakwah
 + [ ]  Support Dark Mode
+
+
+[Hire Me](mailto:hai.mudassir@gmail.com) 
