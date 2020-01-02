@@ -3,7 +3,7 @@
 This project using [Flutter Framework](https://flutter.dev/).
 With BLoC and Repository Pattern
 
-![Farmers Market Finder Demo](https://github.com/ukieTux/Pojok-Islam/blob/master/screenshoot/screen.gif)
+![Farmers Market Finder Demo](https://github.com/ukieTux/Pojok-Islam/blob/master/screenshoot/screen02012020.gif)
 
 ## Using Library
 Look up into [pubspec.yaml](https://github.com/ukieTux/Pojok-Islam/blob/master/pubspec.yaml)
