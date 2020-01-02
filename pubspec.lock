@@ -215,7 +215,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -351,7 +351,7 @@ packages:
       name: logger
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   logging:
     dependency: transitive
     description:
@@ -470,7 +470,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   pub_semver:
     dependency: transitive
     description:
