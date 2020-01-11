@@ -32,10 +32,15 @@ class PrayerTimeDb {
         "SELECT * FROM PrayerTime WHERE masehi = '$currentDate' and kota='$kota' and negara='$negara' and method='$method' limit 1");
 
     Logger().d("queryMap $queryMap");
+
+
+
     if (queryMap.isEmpty) {
       PrayerTimeEntity prayerTimeEntity;
       return prayerTimeEntity;
-    } else
+    } else{
+      var dateInHijr = queryMap[0]["detailHijriah"].toString().split(";")[0];
+
       return PrayerTimeEntity(
           queryMap[0]["timestamp"],
           queryMap[0]["waktuShalat"],
@@ -46,7 +51,11 @@ class PrayerTimeDb {
           queryMap[0]["kota"],
           queryMap[0]["negara"],
           queryMap[0]["method"],
-          queryMap[0]["holidays"]);
+          (dateInHijr =="13" || dateInHijr=="14"||dateInHijr=="15")?"Puasa Ayyamul Bidh":queryMap[0]["holidays"]);
+    }
+
+
+
   }
 
   Future<List<PrayerTimeEntity>> getPrayerMonth() async {
