@@ -25,13 +25,13 @@ dependencies:
   cupertino_icons: ^0.1.3
 
   # date utils
-  intl: ^0.16.0
+  intl: ^0.16.1
   #location and permission
-  geolocator: ^5.1.5
-  permission_handler: ^4.0.0
+  geolocator: ^5.2.0
+  permission_handler: ^4.1.0
   #BLoC library
   flutter_bloc: ^3.1.0
-  equatable: ^1.0.1
+  equatable: ^1.0.2
   #database and sharedpref
   sqflite: ^1.2.0
   shared_preferences: ^0.5.6
@@ -51,7 +51,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.7.4
-  build_runner: ^1.7.2
+  build_runner: ^1.7.3
 
 
 flutter_icons:
