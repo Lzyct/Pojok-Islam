@@ -28,6 +28,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   }
 
   Future<List<Placemark>> getLocation() async {
+    await getPermissionStatus();
     Position _position;
     Geolocator _geoLocator = Geolocator();
     _position = await _geoLocator.getCurrentPosition(
@@ -50,7 +51,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     return _placemark;
   }
 
-  void getPermissionStatus() async {
+  Future getPermissionStatus() async {
     try {
       PermissionStatus _permission = await PermissionHandler()
           .checkPermissionStatus(PermissionGroup.locationWhenInUse);
