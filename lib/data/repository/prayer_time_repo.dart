@@ -39,8 +39,12 @@ class PrayerTimeRepo {
       await prayerTimeDb.getPrayerToday().then((prayer) async {
         if (prayer == null) {
           //if null get from API then save into db
+          Logger().d("prayer is null");
           await pojokIslamClient.getPrayerMonth(_params).then((response) async {
+            Logger().d("isSuccess $response");
             await prayerTimeDb.savePrayerTime(response);
+          }).catchError((error){
+            Logger().d("isError $error");
           });
         }
       });
