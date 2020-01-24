@@ -30,6 +30,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   Future<List<Placemark>> getLocation() async {
     var isGranted = await getPermissionStatus();
+    Logger().d("is granted ? $isGranted");
     if (isGranted) {
       Position _position;
       Geolocator _geoLocator = Geolocator();
@@ -62,6 +63,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           .checkPermissionStatus(PermissionGroup.locationWhenInUse);
       Logger().d(_permission);
       if (_permission == PermissionStatus.granted) {
+        isGranted = true;
       } else if (_permission == PermissionStatus.denied ||
           _permission == PermissionStatus.disabled ||
           _permission == PermissionStatus.restricted ||
@@ -73,7 +75,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
       return isGranted;
     } catch (e) {
-      Logger().d(e);
+      Logger().d("error : " + e);
       return false;
     }
   }

@@ -29,6 +29,8 @@ class HomePage extends StatelessWidget {
       if (location is GetLocationState) {
         getIt.get<PrefManager>().setLastLocation(location.locationValue);
 
+        Logger().d(location.locationValue);
+        
         var _location = location.locationValue.split(",");
         var params = Map<String, String>();
         params['kota'] = _location[0];
