@@ -287,68 +287,72 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Container(
-                              width: context.widthInPercent(context, 55),
-                              padding: EdgeInsets.all(Dimens.Space8),
-                              decoration: new BoxDecoration(
-                                  gradient: context.gradientPrimary(),
-                                  borderRadius: new BorderRadius.only(
-                                      bottomLeft:
-                                          const Radius.circular(Dimens.Space16),
-                                      bottomRight: const Radius.circular(
-                                          Dimens.Space16))),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "${detailHijriah[0]} ${detailHijriah[1]} ${detailHijriah[3]}",
+                          Row(
+                            mainAxisSize : MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                  width: context.widthInPercent(context, 55),
+                                  padding: EdgeInsets.all(Dimens.Space8),
+                                  decoration: new BoxDecoration(
+                                      gradient: context.gradientPrimary(),
+                                      borderRadius: new BorderRadius.only(
+                                          bottomRight: const Radius.circular(
+                                              Dimens.Space16))),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "${detailHijriah[0]} ${detailHijriah[1]} ${detailHijriah[3]}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Dimens.Body1,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ).padding(EdgeInsets.only(
+                                          bottom: (result.holidays == "[]")
+                                              ? Dimens.Space4
+                                              : 0)),
+                                      Visibility(
+                                        visible: (result.holidays == "[]")
+                                            ? false
+                                            : true,
+                                        child: Text(
+                                          "Puasa Ayyaumul Bid",
+                                          style: TextStyle(
+                                              fontSize: Dimens.Caption,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PrayerTimePage()));
+                                },
+                                child: Container(
+                                  child: Text(
+                                    Strings.seeAll,
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: Dimens.Body1,
-                                        color: Colors.white),
+                                        color: Palette.colorPrimary,
+                                        fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
                                   ).padding(EdgeInsets.only(
-                                      bottom: (result.holidays == "[]")
-                                          ? Dimens.Space4
-                                          : 0)),
-                                  Visibility(
-                                    visible: (result.holidays == "[]")
-                                        ? false
-                                        : true,
-                                    child: Text(
-                                      "Puasa Ayyaumul Bid",
-                                      style: TextStyle(
-                                          fontSize: Dimens.Caption,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PrayerTimePage()));
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              child: Text(
-                                Strings.seeAll,
-                                style: TextStyle(
-                                    color: Palette.colorPrimary,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.end,
-                              ).padding(EdgeInsets.only(
-                                  top: Dimens.Space8, right: Dimens.Space16)),
-                            ),
+                                      top: Dimens.Space16, right: Dimens.Space16)),
+                                ),
+                              ),
+                            ],
                           ),
+
                           SizedBox(
                             height: context.heightInPercent(context, 8),
                             child: TimeShalatAdapter(
                                 prayerTime: result.waktuShalat),
                           ).padding(EdgeInsets.only(
-                              top: Dimens.Space4, bottom: Dimens.Space16)),
+                              top: Dimens.Space8, bottom: Dimens.Space16)),
                         ],
                       ),
                     );
