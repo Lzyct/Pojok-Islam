@@ -5,7 +5,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - geolocator (5.2.0):
+  - geolocator (5.2.1):
     - Flutter
   - google_api_availability (2.0.2):
     - Flutter
@@ -13,7 +13,7 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - permission_handler (4.1.0):
+  - "permission_handler (4.2.0+hotfix.3)":
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
@@ -70,11 +70,11 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator: cf6ecc0e5beffb31a51aee7ad6e49a49b293df32
+  geolocator: a048cc412bf350b17d671d170f151b0c9fb8f098
   google_api_availability: 6f1017d3a61be12be3bd9f929cc5b2606f24ae7f
   location_permissions: 360d12ecd1c94a4cab68585f508be1d5ad944c8b
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  permission_handler: b41310bab60fffbf8b5732cd9b4f565671d14762
+  permission_handler: 40520ab8ad1bb78a282b832464e995ec87f77ec6
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9

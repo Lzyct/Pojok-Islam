@@ -32,6 +32,44 @@ extension ContextExtensions on BuildContext {
         gravity: ToastGravity.CENTER,
         timeInSecForIos: 1);
   }
+
+  gradientPrimary() => LinearGradient(
+    // Where the linear gradient begins and ends
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    // Add one stop for each color. Stops should increase from 0 to 1
+    stops: [
+      0.1,
+      0.9,
+    ],
+    colors: [
+      // Colors are easy thanks to Flutter's Colors class.
+      Palette.colorPrimary,
+      Palette.colorPrimaryDark,
+    ],
+  );
+
+  gradientButTransparent() => LinearGradient(
+    // Where the linear gradient begins and ends
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    // Add one stop for each color. Stops should increase from 0 to 1
+    stops: [
+      0.1,
+      0.9,
+    ],
+    colors: [
+      // Colors are easy thanks to Flutter's Colors class.
+      Colors.transparent,
+      Colors.transparent,
+    ],
+  );
+
+  appBar(String _title) => AppBar(
+      title: Text(_title),
+      flexibleSpace: Container(
+        decoration: BoxDecoration(gradient: gradientPrimary()),
+      ));
 }
 
 extension WidgetExtensions on Widget {

@@ -10,7 +10,7 @@ class PrefManager {
   String kOnBoarding = "onboarding";
   String kLastLocation = "currentLocation";
   String kCurrentMethod = "currentMethod";
-
+  String kFirstRun = "firstRun";
   SharedPreferences preferences;
 
   PrefManager(this.preferences);
@@ -40,6 +40,13 @@ class PrefManager {
 
   Future<bool> setLastLocation(String _value) =>
       preferences.setString(kLastLocation, _value);
+
+  Future<bool> setIsFirstRun(bool _value) =>
+      preferences.setBool(kFirstRun, _value);
+
+  bool isFirstRun() => preferences.containsKey(kOnBoarding)
+      ? preferences.getBool(kFirstRun ?? false)
+      : false;
 
   String getCurrentMethod() => preferences.containsKey(kCurrentMethod)
       ? preferences.getString(kCurrentMethod ?? "")

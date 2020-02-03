@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/resources/dimens.dart';
+import 'package:pojok_islam/resources/strings.dart';
 import 'package:pojok_islam/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -35,7 +36,7 @@ class HomeTimeShalatLoading extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "13 Syawal 1440H",
+                        Strings.empty,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: Dimens.Body1,
@@ -43,7 +44,7 @@ class HomeTimeShalatLoading extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        "Puasa Ayyaumul Bid",
+                        "",
                         style: TextStyle(
                             fontSize: Dimens.Caption, color: Colors.white),
                         textAlign: TextAlign.center,

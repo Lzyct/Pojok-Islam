@@ -44,7 +44,7 @@ class RadioDakwah extends StatelessWidget {
                         child: Container(
                       padding: EdgeInsets.all(Dimens.Space16),
                       child: Text(
-                          "test testtesttesttesttesttesttesttesttesttesttesttesttest"),
+                          Strings.loremIpsum),
                     )));
               }),
         )

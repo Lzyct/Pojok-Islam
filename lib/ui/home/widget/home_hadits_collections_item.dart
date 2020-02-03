@@ -22,9 +22,14 @@ class HaditsCollections extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Spacer(),
-              Text(
-                Strings.seeAll,
-                style: TextStyle(color: Palette.colorPrimary),
+              GestureDetector(
+                onTap: (){
+                  print("hadits collection");
+                },
+                child: Text(
+                  Strings.seeAll,
+                  style: TextStyle(color: Palette.colorPrimary),
+                ),
               )
             ],
           ),
@@ -44,7 +49,7 @@ class HaditsCollections extends StatelessWidget {
                         child: Container(
                       padding: EdgeInsets.all(Dimens.Space16),
                       child: Text(
-                          "test testtesttesttesttesttesttesttesttesttesttesttesttest"),
+                          Strings.loremIpsum,overflow: TextOverflow.fade,),
                     )));
               }),
         )

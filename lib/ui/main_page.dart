@@ -17,6 +17,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
+  final PageStorageBucket bucket = PageStorageBucket();
 
   final List<Widget> _fragment = [
     MultiBlocProvider(
@@ -29,18 +30,24 @@ class _MainPageState extends State<MainPage> {
                       prayerTimeDb: PrayerTimeDb()),
                 ))
       ],
-      child: HomePage(),
+      child: HomePage(
+        key: PageStorageKey("pageHome"),
+      ),
     ),
-    Settings()
+    Settings(key: PageStorageKey("pageSettings"))
   ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: _fragment[_currentTabIndex],
+      body: PageStorage(
+        child: _fragment[_currentTabIndex],
+        bucket: bucket,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        onTap: onTabTapped,
+        onTap: (int index) => setState(() => _currentTabIndex = index),
         currentIndex: _currentTabIndex,
         items: [
           BottomNavigationBarItem(
@@ -72,12 +79,5 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
     );
-  }
-
-  void onTabTapped(int index) {
-    setState(() {
-      Logger().d(index.toString());
-      _currentTabIndex = index;
-    });
   }
 }

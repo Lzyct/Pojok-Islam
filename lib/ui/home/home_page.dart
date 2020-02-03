@@ -11,6 +11,7 @@ import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
 import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
 import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
+import 'package:pojok_islam/ui/home/prayertime/prayer_time_page.dart';
 import 'package:pojok_islam/ui/home/widget/home_time_shalat_loading.dart';
 import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
@@ -21,89 +22,100 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+    Logger().d("piyu " + getIt.get<PrefManager>().isFirstRun().toString());
+    var curLocation = "";
+    if (getIt.get<PrefManager>().isFirstRun())
+      BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+    else
+      curLocation = getIt.get<PrefManager>().getLastLocation();
 
-    return BlocBuilder<LocationBloc, LocationState>(
-        builder: (context, location) {
-      //get prayer month
-      if (location is GetLocationState) {
-        getIt.get<PrefManager>().setLastLocation(location.locationValue);
+    return BlocListener<LocationBloc, LocationState>(
+      listener: (context, location) {
+        if (location is GetLocationState) {
+          getIt.get<PrefManager>().setLastLocation(location.locationValue);
+          curLocation = getIt.get<PrefManager>().getLastLocation();
+          getIt.get<PrefManager>().setIsFirstRun(false);
+        }
+      },
+      child: BlocBuilder<LocationBloc, LocationState>(
+          builder: (context, location) {
+        //get prayer month
+        if (location is GetLocationState) {
 
-        Logger().d(location.locationValue);
-        
-        var _location = location.locationValue.split(",");
-        var params = Map<String, String>();
-        params['kota'] = _location[0];
-        params['negara'] = _location[1];
-        params['method'] = '8';
-        BlocProvider.of<PrayerTimeBloc>(context)
-            .add(GetPrayerTodayEvent(params));
-        Logger().d("debug : getPrayerMonth $params");
+          var _location = curLocation.split(",");
+          var params = Map<String, String>();
+          params['kota'] = _location[0];
+          params['negara'] = _location[1];
+          params['method'] = '8';
+          BlocProvider.of<PrayerTimeBloc>(context)
+              .add(GetPrayerTodayEvent(params));
+          Logger().d("debug : getPrayerMonth $params");
 
-        return CustomScrollView(
-          slivers: <Widget>[
-            SliverPersistentHeader(
-              delegate: HeaderView(
-                  expandedHeight: context.heightInPercent(context, 38),
-                  minHeight: context.widthInPercent(context, 35),
-                  location: location.locationValue.toString()),
-              pinned: true,
-              floating: true,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                  margin: EdgeInsets.only(
-                      top: context.heightInPercent(context, 14)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            NearbyMosque(),
-                            HaditsCollections(),
-                            RadioDakwah(),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ]),
-            )
-          ],
-        );
-      } else {
-        return Stack(
-          children: <Widget>[
-            FlareActor(
-              "assets/flare/maps.flr",
-              alignment: Alignment.center,
-              fit: BoxFit.contain,
-              animation: "anim",
-            ),
-            Positioned(
-                bottom: context.heightInPercent(context, 30),
-                child: Container(
-                  width: context.widthInPercent(context, 100),
-                  child: Shimmer.fromColors(
-                    baseColor: Palette.textPrimary,
-                    highlightColor: Colors.grey[100],
-                    period: Duration(seconds: 3),
-                    enabled: true,
-                    child: Text(
-                      "Mencari Lokasi ...",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: Dimens.Title),
+          return CustomScrollView(
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                delegate: HeaderView(
+                    expandedHeight: context.heightInPercent(context, 38),
+                    minHeight: context.widthInPercent(context, 35),
+                    location: curLocation.toString()),
+                pinned: true,
+                floating: true,
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: context.heightInPercent(context, 14)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              NearbyMosque(),
+                              HaditsCollections(),
+                              RadioDakwah(),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ))
-          ],
-        );
-      }
-    });
+                ]),
+              )
+            ],
+          );
+        } else {
+          return Stack(
+            children: <Widget>[
+              FlareActor(
+                "assets/flare/maps.flr",
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                animation: "anim",
+              ),
+              Positioned(
+                  bottom: context.heightInPercent(context, 30),
+                  child: Container(
+                    width: context.widthInPercent(context, 100),
+                    child: Shimmer.fromColors(
+                      baseColor: Palette.textPrimary,
+                      highlightColor: Colors.grey[100],
+                      period: Duration(seconds: 3),
+                      enabled: true,
+                      child: Text(
+                        Strings.findLocation,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: Dimens.Title),
+                      ),
+                    ),
+                  ))
+            ],
+          );
+        }
+      }),
+    );
   }
 }
 
@@ -177,23 +189,26 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                   right: Dimens.Space4,
                                   top: Dimens.Space8,
                                   bottom: Dimens.Space8),
-                              child: Row(
-                                children: <Widget>[
-                                  Image(
-                                    image: AssetImage(
-                                        'assets/images/ic_location.png'),
-                                    width: Dimens.SmallIcon,
-                                    height: Dimens.SmallIcon,
-                                    color: Palette.colorPrimary,
-                                  ),
-                                  Text(
-                                    location,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontSize: Dimens.Body1,
-                                        color: Palette.colorPrimary),
-                                  ),
-                                ],
+                              child: Flexible(
+                                child: Row(
+                                  children: <Widget>[
+                                    Image(
+                                      image: AssetImage(
+                                          'assets/images/ic_location.png'),
+                                      width: Dimens.SmallIcon,
+                                      height: Dimens.SmallIcon,
+                                      color: Palette.colorPrimary,
+                                    ),
+                                    Text(
+                                      location,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: Dimens.Body1,
+                                          color: Palette.colorPrimary),
+                                    ),
+                                  ],
+                                ),
                               ),
                             )),
                       ],
@@ -267,72 +282,76 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                     var detailHijriah = result.detailHijriah.split(";");
 
                     return Card(
-                        elevation: 4,
-                        child: SizedBox(
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                                width: context.widthInPercent(context, 50),
-                                padding: EdgeInsets.all(Dimens.Space8),
-                                decoration: new BoxDecoration(
-                                    color: Palette.colorPrimaryDark,
-                                    borderRadius: new BorderRadius.only(
-                                        bottomLeft: const Radius.circular(
-                                            Dimens.Space16),
-                                        bottomRight: const Radius.circular(
-                                            Dimens.Space16))),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "${detailHijriah[0]} ${detailHijriah[1]} ${detailHijriah[3]}",
+                      elevation: Dimens.Space4,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                              width: context.widthInPercent(context, 55),
+                              padding: EdgeInsets.all(Dimens.Space8),
+                              decoration: new BoxDecoration(
+                                  gradient: context.gradientPrimary(),
+                                  borderRadius: new BorderRadius.only(
+                                      bottomLeft:
+                                          const Radius.circular(Dimens.Space16),
+                                      bottomRight: const Radius.circular(
+                                          Dimens.Space16))),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "${detailHijriah[0]} ${detailHijriah[1]} ${detailHijriah[3]}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Dimens.Body1,
+                                        color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ).padding(EdgeInsets.only(
+                                      bottom: (result.holidays == "[]")
+                                          ? Dimens.Space4
+                                          : 0)),
+                                  Visibility(
+                                    visible: (result.holidays == "[]")
+                                        ? false
+                                        : true,
+                                    child: Text(
+                                      "Puasa Ayyaumul Bid",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Dimens.Body1,
+                                          fontSize: Dimens.Caption,
                                           color: Colors.white),
                                       textAlign: TextAlign.center,
-                                    ).padding(EdgeInsets.only(
-                                        bottom: (result.holidays == "[]")
-                                            ? Dimens.Space4
-                                            : 0)),
-                                    Visibility(
-                                      visible: (result.holidays == "[]")
-                                          ? false
-                                          : true,
-                                      child: Text(
-                                        "Puasa Ayyaumul Bid",
-                                        style: TextStyle(
-                                            fontSize: Dimens.Caption,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      ),
                                     ),
-                                  ],
-                                )),
-                            Flexible(
-                                child: Container(
+                                  ),
+                                ],
+                              )),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PrayerTimePage()));
+                            },
+                            child: Container(
                               width: double.infinity,
-                              height: context.heightInPercent(context, 8.5),
-                              margin: EdgeInsets.only(
-                                  left: Dimens.Space8,
-                                  right: Dimens.Space8,
-                                  top: Dimens.Space8),
-                              child: TimeShalatAdapter(
-                                  prayerTime: result.waktuShalat),
-                            )),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(Dimens.Space8),
                               child: Text(
-                                "Lihat Semua",
+                                Strings.seeAll,
                                 style: TextStyle(
                                     color: Palette.colorPrimary,
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.end,
-                              ),
-                            )
-                          ],
-                        )));
+                              ).padding(EdgeInsets.only(
+                                  top: Dimens.Space8, right: Dimens.Space16)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: context.heightInPercent(context, 8),
+                            child: TimeShalatAdapter(
+                                prayerTime: result.waktuShalat),
+                          ).padding(EdgeInsets.only(
+                              top: Dimens.Space4, bottom: Dimens.Space16)),
+                        ],
+                      ),
+                    );
                   } else {
                     return Container();
                   }

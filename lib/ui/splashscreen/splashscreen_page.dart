@@ -55,6 +55,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
     var prefManager = getIt.get<PrefManager>();
     prefManager.setCurrentMethod("8"); // TODO set default method is 8
+    prefManager.setIsFirstRun(true);
 
     Future.delayed(Duration(seconds: 2), () {
       Logger().d("piyu $prefManager.isFirst()");
