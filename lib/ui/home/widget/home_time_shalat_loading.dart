@@ -24,6 +24,7 @@ class HomeTimeShalatLoading extends StatelessWidget {
           width: context.widthInPercent(context, 90),
           height: context.heightInPercent(context, 18),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                   width: context.widthInPercent(context, 40),
@@ -31,7 +32,6 @@ class HomeTimeShalatLoading extends StatelessWidget {
                   decoration: new BoxDecoration(
                       color: Palette.colorPrimaryDark,
                       borderRadius: new BorderRadius.only(
-                          bottomLeft: const Radius.circular(Dimens.Space16),
                           bottomRight: const Radius.circular(Dimens.Space16))),
                   child: Column(
                     children: <Widget>[
@@ -39,7 +39,7 @@ class HomeTimeShalatLoading extends StatelessWidget {
                         Strings.empty,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: Dimens.Body1,
+                            fontSize: Dimens.Body2,
                             color: Colors.white),
                         textAlign: TextAlign.center,
                       ),

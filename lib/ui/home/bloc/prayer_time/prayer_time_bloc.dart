@@ -23,15 +23,16 @@ class PrayerTimeBloc extends Bloc<PrayerTimeEvent, PrayerTimeState> {
     if (event is GetPrayerMonthEvent) {
       try {
         yield PrayerLoadingState();
-        var _response = await prayerTimeRepo.getPrayerMonth(event._params);
+        var _response = await prayerTimeRepo.getPrayerMonth(event._params,event._dateTime);
         yield GetPrayerMonthState(_response);
       } catch (e) {
         Logger().e(e);
       }
-    } else if (event is GetPrayerTodayEvent) {
+    }
+    if (event is GetPrayerTodayEvent) {
       try {
         yield PrayerLoadingState();
-        var _response = await prayerTimeRepo.getPrayerToday(event._params);
+        var _response = await prayerTimeRepo.getPrayerToday(event._params,event._dateTime);
         yield GetPrayerTodayState(_response);
       } catch (e) {
         Logger().e(e);

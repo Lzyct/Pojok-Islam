@@ -8,7 +8,6 @@ import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 part 'location_event.dart';
-
 part 'location_state.dart';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {

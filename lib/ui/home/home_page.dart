@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:pojok_islam/data/repository/prayer_time_repo.dart';
+import 'package:pojok_islam/data/source/local/prayer_time_db.dart';
+import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
 import 'package:pojok_islam/di/pref_manager.dart';
 import 'package:pojok_islam/main.dart';
 import 'package:pojok_islam/resources/colors.dart';
@@ -11,11 +14,13 @@ import 'package:pojok_islam/resources/dimens.dart';
 import 'package:pojok_islam/resources/strings.dart';
 import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
 import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
-import 'package:pojok_islam/ui/home/prayertime/prayer_time_page.dart';
+import 'package:pojok_islam/ui/home/prayertime/prayer_month_page.dart';
 import 'package:pojok_islam/ui/home/widget/home_time_shalat_loading.dart';
 import 'package:pojok_islam/ui/home/widget/home_widget.dart';
 import 'package:pojok_islam/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'prayertime/bloc/prayer_month/prayer_month_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -32,6 +37,7 @@ class HomePage extends StatelessWidget {
     return BlocListener<LocationBloc, LocationState>(
       listener: (context, location) {
         if (location is GetLocationState) {
+          print("piyu get location state");
           getIt.get<PrefManager>().setLastLocation(location.locationValue);
           curLocation = getIt.get<PrefManager>().getLastLocation();
           getIt.get<PrefManager>().setIsFirstRun(false);
@@ -41,14 +47,14 @@ class HomePage extends StatelessWidget {
           builder: (context, location) {
         //get prayer month
         if (location is GetLocationState) {
-
           var _location = curLocation.split(",");
           var params = Map<String, String>();
           params['kota'] = _location[0];
           params['negara'] = _location[1];
           params['method'] = '8';
+
           BlocProvider.of<PrayerTimeBloc>(context)
-              .add(GetPrayerTodayEvent(params));
+              .add(GetPrayerTodayEvent(params, DateTime.now()));
           Logger().d("debug : getPrayerMonth $params");
 
           return CustomScrollView(
@@ -288,7 +294,7 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Row(
-                            mainAxisSize : MainAxisSize.max,
+                            mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
@@ -331,7 +337,16 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => PrayerTimePage()));
+                                          builder: (context) => BlocProvider(
+                                              create: (context) =>
+                                                  PrayerMonthBloc(
+                                                    prayerTimeRepo: PrayerTimeRepo(
+                                                        pojokIslamClient:
+                                                            PojokIslamClient(),
+                                                        prayerTimeDb:
+                                                            PrayerTimeDb()),
+                                                  ),
+                                              child: PrayerMonthPage())));
                                 },
                                 child: Container(
                                   child: Text(
@@ -341,18 +356,18 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                         fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
                                   ).padding(EdgeInsets.only(
-                                      top: Dimens.Space16, right: Dimens.Space16)),
+                                      top: Dimens.Space4,
+                                      right: Dimens.Space16)),
                                 ),
                               ),
                             ],
                           ),
-
                           SizedBox(
                             height: context.heightInPercent(context, 8),
                             child: TimeShalatAdapter(
                                 prayerTime: result.waktuShalat),
                           ).padding(EdgeInsets.only(
-                              top: Dimens.Space8, bottom: Dimens.Space16)),
+                              top: Dimens.Space16, bottom: Dimens.Space16)),
                         ],
                       ),
                     );

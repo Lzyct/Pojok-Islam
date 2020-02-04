@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:pojok_islam/data/repository/prayer_time_repo.dart';
 import 'package:pojok_islam/data/source/local/prayer_time_db.dart';
 import 'package:pojok_islam/data/source/rest/pojok_islam_client.dart';
@@ -8,6 +7,7 @@ import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
 import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
+import 'package:pojok_islam/ui/home/prayertime/bloc/prayer_month/prayer_month_bloc.dart';
 import 'package:pojok_islam/ui/settings/settings_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -28,7 +28,8 @@ class _MainPageState extends State<MainPage> {
                   prayerTimeRepo: PrayerTimeRepo(
                       pojokIslamClient: PojokIslamClient(),
                       prayerTimeDb: PrayerTimeDb()),
-                ))
+                )),
+
       ],
       child: HomePage(
         key: PageStorageKey("pageHome"),
@@ -39,7 +40,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: PageStorage(
         child: _fragment[_currentTabIndex],

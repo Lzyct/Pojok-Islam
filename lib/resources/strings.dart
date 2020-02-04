@@ -14,4 +14,6 @@ class Strings {
   static const empty = "";
 
   static const settings = "Pengaturan";
+
+  static const detailPrayer = "Detail Waktu Shalat";
 }

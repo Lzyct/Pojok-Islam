@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:pojok_islam/data/models/entity/prayer_time_entity.dart';
 import 'package:pojok_islam/data/source/local/prayer_time_db.dart';
@@ -18,7 +19,15 @@ class PrayerTimeRepo {
       : assert(pojokIslamClient != null && prayerTimeDb != null);
 
   Future<List<PrayerTimeEntity>> getPrayerMonth(
-      Map<String, String> _params) async {
+      Map<String, String> _params, DateTime dateTime) async {
+
+    //parse input date
+    var _formatter = DateFormat('MM-yyyy');
+    var _monthYear = _formatter.format(dateTime).split("-");
+    _params['month'] = _monthYear[0];
+    _params['year'] = _monthYear[1];
+
+
     Logger().d("repoPrayerTime");
     //check prayer time in db first
     prayerTimeDb.getPrayerMonth().then((prayer) async {
@@ -33,17 +42,24 @@ class PrayerTimeRepo {
     return prayerTimeDb.getPrayerMonth();
   }
 
-  Future<PrayerTimeEntity> getPrayerToday(Map<String, String> _params) async {
+  Future<PrayerTimeEntity> getPrayerToday(
+      Map<String, String> _params, DateTime dateTime) async {
     //check prayer time in db first
     try {
       await prayerTimeDb.getPrayerToday().then((prayer) async {
         if (prayer == null) {
           //if null get from API then save into db
           Logger().d("prayer is null");
+          //parse input date
+          var _formatter = DateFormat('MM-yyyy');
+          var _monthYear = _formatter.format(dateTime).split("-");
+          _params['month'] = _monthYear[0];
+          _params['year'] = _monthYear[1];
+
           await pojokIslamClient.getPrayerMonth(_params).then((response) async {
             Logger().d("isSuccess $response");
             await prayerTimeDb.savePrayerTime(response);
-          }).catchError((error){
+          }).catchError((error) {
             Logger().d("isError $error");
           });
         }
