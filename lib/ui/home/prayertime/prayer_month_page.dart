@@ -37,49 +37,51 @@ class PrayerMonthPage extends StatelessWidget {
           ),
           BlocListener<PrayerMonthBloc, PrayerMonthState>(
               listener: (context, prayerMonth) {
-            print("piyu");
-            if (prayerMonth is GetSelectedMonth) {
-              print("isCurrentMonth listener : " + prayerMonth.selectedMonth);
-              selectedMonth = prayerMonth.selectedMonth;
-            }
-          }, child: BlocBuilder<PrayerMonthBloc, PrayerMonthState>(
-            builder: (context, prayerMonth) {
-              if (prayerMonth is GetSelectedMonth) {
-                return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        BlocProvider.of<PrayerMonthBloc>(context)
-                            .add(PreviousMonthState(selectedMonth));
-                      },
-                      icon: Icon(
-                        Icons.arrow_left,
-                        color: Palette.colorPrimary,
-                      ),
+                print("piyu");
+                if (prayerMonth is GetSelectedMonth) {
+                  print(
+                      "isCurrentMonth listener : " + prayerMonth.selectedMonth);
+                  selectedMonth = prayerMonth.selectedMonth;
+                }
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<PrayerMonthBloc>(context)
+                          .add(PreviousMonthState(selectedMonth));
+                    },
+                    icon: Icon(
+                      Icons.arrow_left,
+                      color: Palette.colorPrimary,
                     ),
-                    Text(selectedMonth,
-                        style: TextStyle(
-                            fontSize: Dimens.Subheading2,
-                            color: Palette.colorPrimary)),
-                    IconButton(
-                      onPressed: () {
-                        BlocProvider.of<PrayerMonthBloc>(context)
-                            .add(NextMonthState(selectedMonth));
-                      },
-                      icon: Icon(
-                        Icons.arrow_right,
-                        color: Palette.colorPrimary,
-                      ),
+                  ),
+                  BlocBuilder<PrayerMonthBloc,PrayerMonthState>(
+                    builder: (context,prayerMonth){
+                      if(prayerMonth is GetSelectedMonth){
+                        return Text(selectedMonth,
+                            style: TextStyle(
+                                fontSize: Dimens.Subheading2,
+                                color: Palette.colorPrimary));
+                      }else return Container();
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<PrayerMonthBloc>(context)
+                          .add(NextMonthState(selectedMonth));
+                    },
+                    icon: Icon(
+                      Icons.arrow_right,
+                      color: Palette.colorPrimary,
                     ),
-                  ],
-                ).padding(EdgeInsets.only(left : Dimens.Space16,right: Dimens.Space16));
-              } else
-                return Container();
-            },
-          ))
+                  ),
+                ],
+              ).padding(
+                  EdgeInsets.only(left: Dimens.Space16, right: Dimens.Space16)))
         ],
       ),
     );

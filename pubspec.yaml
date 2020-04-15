@@ -14,7 +14,7 @@ description: Aplikasi seputar Islam.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.8.0-dev.5.0 <3.0.0"
+  sdk: ">=2.8.0-dev.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -33,9 +33,9 @@ dependencies:
   flutter_bloc: ^3.2.0
   equatable: ^1.0.3
   #database and sharedpref
-  sqflite: ^1.2.0
-  shared_preferences: ^0.5.6+1
-  path_provider: ^1.6.0
+  sqflite: ^1.2.1
+  shared_preferences: ^0.5.6+2
+  path_provider: ^1.6.1
   #network
   dio: ^3.0.8
   # Dependencies Injection

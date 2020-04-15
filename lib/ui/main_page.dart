@@ -7,7 +7,6 @@ import 'package:pojok_islam/resources/colors.dart';
 import 'package:pojok_islam/ui/home/bloc/location/location_bloc.dart';
 import 'package:pojok_islam/ui/home/bloc/prayer_time/prayer_time_bloc.dart';
 import 'package:pojok_islam/ui/home/home_page.dart';
-import 'package:pojok_islam/ui/home/prayertime/bloc/prayer_month/prayer_month_bloc.dart';
 import 'package:pojok_islam/ui/settings/settings_page.dart';
 
 class MainPage extends StatefulWidget {

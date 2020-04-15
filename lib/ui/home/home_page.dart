@@ -58,6 +58,7 @@ class HomePage extends StatelessWidget {
           Logger().d("debug : getPrayerMonth $params");
 
           return CustomScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
             slivers: <Widget>[
               SliverPersistentHeader(
                 delegate: HeaderView(
@@ -71,7 +72,8 @@ class HomePage extends StatelessWidget {
                 delegate: SliverChildListDelegate([
                   Container(
                     margin: EdgeInsets.only(
-                        top: context.heightInPercent(context, 14)),
+                        top: context.heightInPercent(context, 10)),
+                    padding: EdgeInsets.only(bottom: context.heightInPercent(context,12)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.max,
