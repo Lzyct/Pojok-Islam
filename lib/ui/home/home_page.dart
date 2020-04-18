@@ -34,89 +34,88 @@ class HomePage extends StatelessWidget {
     else
       curLocation = getIt.get<PrefManager>().getLastLocation();
 
-    return BlocListener<LocationBloc, LocationState>(
-      listener: (context, location) {
-        if (location is GetLocationState) {
-          print("piyu get location state");
+    return BlocBuilder<LocationBloc, LocationState>(
+        builder: (context, location) {
+      //get prayer month
+      if (location is GetLocationState) {
+        try {
           getIt.get<PrefManager>().setLastLocation(location.locationValue);
-          curLocation = getIt.get<PrefManager>().getLastLocation();
-          getIt.get<PrefManager>().setIsFirstRun(false);
-        }
-      },
-      child: BlocBuilder<LocationBloc, LocationState>(
-          builder: (context, location) {
-        //get prayer month
-        if (location is GetLocationState) {
-          var _location = curLocation.split(",");
+          var _location = location.locationValue.split(",");
           var params = Map<String, String>();
           params['kota'] = _location[0];
           params['negara'] = _location[1];
           params['method'] = '8';
-
           BlocProvider.of<PrayerTimeBloc>(context)
-              .add(GetPrayerTodayEvent(params, DateTime.now()));
+              .add(GetPrayerTodayEvent(params));
           Logger().d("debug : getPrayerMonth $params");
+        } catch (error) {
+          Logger().e(error);
+          var params = Map<String, String>();
+          params['kota'] = "Unknown Location";
+          BlocProvider.of<PrayerTimeBloc>(context)
+              .add(GetPrayerTodayEvent(params));
+        }
 
-          return CustomScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            slivers: <Widget>[
-              SliverPersistentHeader(
-                delegate: HeaderView(
-                    expandedHeight: context.heightInPercent(context, 38),
-                    minHeight: context.widthInPercent(context, 35),
-                    location: curLocation.toString()),
-                pinned: true,
-                floating: true,
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: context.heightInPercent(context, 10)),
-                    padding: EdgeInsets.only(bottom: context.heightInPercent(context,12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              NearbyMosque(),
-                              HaditsCollections(),
-                              RadioDakwah(),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverPersistentHeader(
+              delegate: HeaderView(
+                  expandedHeight: context.heightInPercent(context, 38),
+                  minHeight: context.widthInPercent(context, 35),
+                  location: location.locationValue.toString()),
+              pinned: true,
+              floating: true,
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(
+                  margin: EdgeInsets.only(
+                      top: context.heightInPercent(context, 14)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            NearbyMosque(),
+                            HaditsCollections(),
+                            RadioDakwah(),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                ]),
-              )
-            ],
-          );
-        } else {
-          return Stack(
-            children: <Widget>[
-              FlareActor(
-                "assets/flare/maps.flr",
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                animation: "anim",
-              ),
-              Positioned(
-                  bottom: context.heightInPercent(context, 30),
-                  child: Container(
-                    width: context.widthInPercent(context, 100),
-                    child: Shimmer.fromColors(
-                      baseColor: Palette.textPrimary,
-                      highlightColor: Colors.grey[100],
-                      period: Duration(seconds: 3),
-                      enabled: true,
-                      child: Text(
-                        Strings.findLocation,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: Dimens.Title),
-                      ),
+                ),
+              ]),
+            )
+          ],
+        );
+      } else if (location is GetLocationError) {
+        return Center(child:
+          Text("Unknown Location"),);
+      } else {
+        return Stack(
+          children: <Widget>[
+            FlareActor(
+              "assets/flare/maps.flr",
+              alignment: Alignment.center,
+              fit: BoxFit.contain,
+              animation: "anim",
+            ),
+            Positioned(
+                bottom: context.heightInPercent(context, 30),
+                child: Container(
+                  width: context.widthInPercent(context, 100),
+                  child: Shimmer.fromColors(
+                    baseColor: Palette.textPrimary,
+                    highlightColor: Colors.grey[100],
+                    period: Duration(seconds: 3),
+                    enabled: true,
+                    child: Text(
+                      "Mencari Lokasi ...",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: Dimens.Title),
                     ),
                   ))
             ],
@@ -197,26 +196,24 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                   right: Dimens.Space4,
                                   top: Dimens.Space8,
                                   bottom: Dimens.Space8),
-                              child: Flexible(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image(
-                                      image: AssetImage(
-                                          'assets/images/ic_location.png'),
-                                      width: Dimens.SmallIcon,
-                                      height: Dimens.SmallIcon,
-                                      color: Palette.colorPrimary,
-                                    ),
-                                    Text(
-                                      location,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: Dimens.Body1,
-                                          color: Palette.colorPrimary),
-                                    ),
-                                  ],
-                                ),
+                              child: Row(
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage(
+                                        'assets/images/ic_location.png'),
+                                    width: Dimens.SmallIcon,
+                                    height: Dimens.SmallIcon,
+                                    color: Palette.colorPrimary,
+                                  ),
+                                  Text(
+                                    location,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: Dimens.Body1,
+                                        color: Palette.colorPrimary),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
                             )),
                       ],
@@ -351,15 +348,30 @@ class HeaderView extends SliverPersistentHeaderDelegate {
                                               child: PrayerMonthPage())));
                                 },
                                 child: Container(
-                                  child: Text(
-                                    Strings.seeAll,
-                                    style: TextStyle(
-                                        color: Palette.colorPrimary,
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ).padding(EdgeInsets.only(
-                                      top: Dimens.Space4,
-                                      right: Dimens.Space16)),
+                              width: double.infinity,
+                              height: context.heightInPercent(context, 8.5),
+                              margin: EdgeInsets.only(
+                                  left: Dimens.Space8,
+                                  right: Dimens.Space8,
+                                  top: Dimens.Space8),
+                              child: TimeShalatAdapter(
+                                  prayerTime: result.waktuShalat),
+                            )),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(Dimens.Space8),
+                              child: InkWell(
+                                onLongPress: () {
+                                  Logger().d("onPress");
+                                  /*   Navigator.push(context,
+                                        MaterialPageRoute(builder: (context)=> PrayerInMonthPage()));*/
+                                },
+                                child: Text(
+                                  "Lihat Semua",
+                                  style: TextStyle(
+                                      color: Palette.colorPrimary,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],

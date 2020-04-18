@@ -12,6 +12,7 @@ part 'prayer_time_state.dart';
 
 class PrayerTimeBloc extends Bloc<PrayerTimeEvent, PrayerTimeState> {
   final PrayerTimeRepo prayerTimeRepo;
+
   PrayerTimeBloc({@required this.prayerTimeRepo})
       : assert(prayerTimeRepo != null);
 
@@ -23,17 +24,25 @@ class PrayerTimeBloc extends Bloc<PrayerTimeEvent, PrayerTimeState> {
     if (event is GetPrayerMonthEvent) {
       try {
         yield PrayerLoadingState();
-        var _response = await prayerTimeRepo.getPrayerMonth(event._params,event._dateTime);
-        yield GetPrayerMonthState(_response);
+        if (event._params['kota'] == "Unknown Location") {
+          yield PrayerErrorState();
+        } else {
+          var _response = await prayerTimeRepo.getPrayerMonth(event._params);
+          yield GetPrayerMonthState(_response);
+        }
       } catch (e) {
         Logger().e(e);
       }
     }
     if (event is GetPrayerTodayEvent) {
       try {
-        yield PrayerLoadingState();
-        var _response = await prayerTimeRepo.getPrayerToday(event._params,event._dateTime);
-        yield GetPrayerTodayState(_response);
+        if(event._params['kota']== "Unknown Location"){
+          yield PrayerErrorState();
+        }else{
+          yield PrayerLoadingState();
+          var _response = await prayerTimeRepo.getPrayerToday(event._params);
+          yield GetPrayerTodayState(_response);
+        }
       } catch (e) {
         Logger().e(e);
       }

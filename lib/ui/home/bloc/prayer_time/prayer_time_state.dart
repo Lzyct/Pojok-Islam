@@ -10,6 +10,8 @@ abstract class PrayerTimeState extends Equatable {
 
 class PrayerLoadingState extends PrayerTimeState {}
 
+class PrayerErrorState extends PrayerTimeState{}
+
 class GetPrayerMonthState extends PrayerTimeState {
   final List<PrayerTimeEntity> prayerTimeEntity;
 

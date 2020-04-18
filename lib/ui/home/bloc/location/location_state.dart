@@ -16,5 +16,6 @@ class GetLocationState extends LocationState {
 }
 
 class GetLocationLoading extends LocationState {}
+class GetLocationError extends LocationState {}
 
 class GetLocationError extends LocationState {}
